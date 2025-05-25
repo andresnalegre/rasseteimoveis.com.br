@@ -1,0 +1,412 @@
+/* Page Banner */
+.page-banner {
+    background: linear-gradient(135deg, #004d40 0%, #00695c 100%);
+    padding: 60px 0;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 77, 64, 0.15);
+}
+
+.page-banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="rgba(255,255,255,0.08)"/></pattern></defs><rect width="100" height="100" fill="url(%23dots)"/></svg>');
+    pointer-events: none;
+}
+
+.page-banner-title {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    position: relative;
+    z-index: 2;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.p-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: white;
+    margin: 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+    position: relative;
+}
+
+.p-title::after {
+    content: '';
+    position: absolute;
+    bottom: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 2px;
+}
+
+/* Efeito de animação suave */
+.page-banner {
+    animation: fadeInDown 0.8s ease-out;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .page-banner {
+        padding: 50px 0;
+    }
+
+    .p-title {
+        font-size: 1.8rem;
+    }
+
+    .page-banner-title {
+        padding: 0 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .page-banner {
+        padding: 40px 0;
+    }
+
+    .p-title {
+        font-size: 1.5rem;
+        line-height: 1.3;
+    }
+}
+
+/* Conteúdo adicional para demonstração */
+.content {
+    padding: 40px 20px;
+    text-align: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.content h2 {
+    color: #1e293b;
+    margin-bottom: 20px;
+}
+
+.content p {
+    color: #64748b;
+    line-height: 1.6;
+}
+
+/* Content bellow */
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -15px;
+}
+
+.col-lg-8 {
+    width: 66.66%;
+    padding: 0 15px;
+}
+
+.col-lg-4 {
+    width: 33.33%;
+    padding: 0 15px;
+}
+
+/* Section Padding */
+.section-padding {
+    padding: 40px 0;
+}
+
+/* Property Details Header */
+.property-details {
+    background: white;
+    border-radius: 16px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.info h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 20px;
+    line-height: 1.3;
+}
+
+.address {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #64748b;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.address i {
+    color: #004d40;
+    font-size: 1.2rem;
+}
+
+/* Social Buttons */
+.others.social ul {
+    display: flex;
+    gap: 12px;
+    list-style: none;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.others.social ul li a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    color: white;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 1.2rem;
+}
+
+.favorite {
+    background: #fbbf24;
+}
+
+.whatsapp {
+    background: #25d366;
+}
+
+.facebook {
+    background: #1877f2;
+}
+
+.twitter {
+    background: #1da1f2;
+}
+
+.others.social ul li a:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Property Slider */
+.property-slider {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.owl-carousel .item img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+/* Property Description */
+.inner-box {
+    background: white;
+    border-radius: 16px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.desc-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #004d40;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 3px solid #004d40;
+    position: relative;
+}
+
+.desc-title::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: #00695c;
+}
+
+.inner-box p {
+    color: #374151;
+    line-height: 1.7;
+    font-size: 1rem;
+    white-space: pre-line;
+}
+
+/* Sidebar */
+.right-sidebar {
+    position: sticky;
+    top: 20px;
+}
+
+.widget {
+    background: white;
+    border-radius: 16px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+.agent-inner {
+    padding: 30px;
+}
+
+.sidebar-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #004d40;
+    margin-bottom: 20px;
+    text-align: center;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.price {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #059669;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.feature {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #374151;
+    font-size: 1rem;
+    margin-bottom: 12px;
+    font-weight: 500;
+}
+
+.feature i {
+    color: #004d40;
+    width: 20px;
+    text-align: center;
+}
+
+/* Contact Form */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #004d40;
+    box-shadow: 0 0 0 3px rgba(0, 77, 64, 0.1);
+}
+
+.btn-common {
+    background: linear-gradient(135deg, #004d40 0%, #00695c 100%);
+    color: white;
+    border: none;
+    padding: 14px 24px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.btn-common:hover {
+    background: linear-gradient(135deg, #00695c 0%, #26a69a 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 77, 64, 0.3);
+}
+
+/* Map Section */
+.map-section {
+    height: 400px;
+    background: #e5e7eb;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #64748b;
+    font-size: 1.1rem;
+}
+
+/* Mobile Properties */
+.property-dsc.hidden-md.hidden-lg {
+    display: none;
+}
+
+/* Media Queries */
+@media (max-width: 992px) {
+    .col-lg-8,
+    .col-lg-4 {
+        width: 100%;
+    }
+
+    .property-dsc.hidden-md.hidden-lg {
+        display: block;
+        margin-bottom: 30px;
+    }
+
+    .right-sidebar .widget:first-child {
+        display: none;
+    }
+
+    .others.social {
+        margin-top: 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0 15px;
+    }
+
+    .property-details,
+    .inner-box,
+    .agent-inner {
+        padding: 20px;
+    }
+
+    .info h1 {
+        font-size: 1.7rem;
+    }
+
+    .owl-carousel .item img {
+        height: 250px;
+    }
+}

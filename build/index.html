@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Rassete Imóveis</title>
+    <link rel="stylesheet" href="styles/bootstrap-5.3.3-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="./styles/assets/favicon.png">
+    <meta name="theme-color" content="#ffffff">
+</head>
+<body>
+    <!-- Header -->
+    <header id="header-container">
+        <!-- Green Banner -->
+        <div id="green-banner">
+            <div class="scroller">
+                <ul id="info-list">
+                    <li id="info-1">Novos lançamentos para 2025 estão chegando!</li>
+                    <li id="info-2">Visite nosso site para ofertas exclusivas!</li>
+                    <li id="info-3">Entre em contato: (47) 99977-6007</li>
+                    <li id="info-4">Assine nossa newsletter para novidades!</li>
+                    <li id="info-5">Imóveis com condições especiais de financiamento!</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-white sticky">
+            <div class="container">
+                <a class="brand" href="./index.html">
+                    <img class="logo" src="./styles/assets/logo.png" alt="Rassete Imóveis Logo">
+                </a>
+                <button class="menu" onclick="this.classList.toggle('opened');this.setAttribute('aria-expanded', this.classList.contains('opened'))" aria-label="Main Menu">
+                    <svg width="100" height="100" viewBox="0 0 100 100">
+                        <path class="line line1" d="M 20,29.000046 H 80.000231 C 80.000231,29.000046 94.498839,28.817352 94.532987,66.711331 94.543142,77.980673 90.966081,81.670246 85.259173,81.668997 79.552261,81.667751 75.000211,74.999942 75.000211,74.999942 L 25.000021,25.000058" />
+                        <path class="line line2" d="M 20,50 H 80" />
+                        <path class="line line3" d="M 20,70.999954 H 80.000231 C 80.000231,70.999954 94.498839,71.182648 94.532987,33.288669 94.543142,22.019327 90.966081,18.329754 85.259173,18.331003 79.552261,18.332249 75.000211,25.000058 75.000211,25.000058 L 25.000021,74.999942" />
+                    </svg>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarMenu">
+                    <ul class="nav-list ml-auto">
+                        <li class="menu-item"><a class="menu-link" href="./index.html">Início</a></li>
+                        <li class="menu-item"><a class="menu-link" onclick="openModal()">Quem Somos</a></li>
+                        <li class="menu-item dropdown d-none d-lg-block">
+                            <a class="menu-link dropdown-toggle" href="#" id="dropdownMenu" role="button" aria-haspopup="true" aria-expanded="false">
+                                Imóveis
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenu">
+                                <a class="dropdown-item" href="./pages/sell.html">Venda</a>
+                                <a class="dropdown-item" href="./pages/rent.html">Locação</a>
+                            </div>
+                        </li>
+                        <li class="menu-item d-lg-none"><a class="menu-link" href="#">Venda</a></li>
+                        <li class="menu-item d-lg-none"><a class="menu-link" href="#">Locação</a></li>
+                        <li class="menu-item"><a class="menu-link" onclick="openContactModal()" style="cursor: pointer;">Fale Conosco</a></li>
+                        <li class="menu-item"><a class="menu-link" href="./pages/favorites.html"><i class="lni-star-filled"></i> Favoritos</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- About Modal -->
+            <div id="quemSomosModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 class="modal-title">Quem Somos</h2>
+                        <span class="close" onclick="closeModal()">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <p>João Serpa, Eliane Averbeck e Fabrício Romão, formam uma Sociedade pautada no respeito entre si, no compromisso de construir uma história que alie empreendedorismo e sucesso, na busca diária por trazer o melhor atendimento a quem mais importa: você.</p>
+                        <br>
+                        <p>Assim, é a Rassete Imóveis, uma empresa que chega para trazer novos ares ao mercado imobiliário de Navegantes, associando o melhor de dois mundos: a expertise de corretores com anos de experiência no mercado e a vontade de inovar, crescer e fazer diferente em um cenário que, muitas vezes, vê mais do mesmo.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Modal -->
+            <div id="faleConoscoModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 class="modal-title">Fale Conosco</h2>
+                        <span class="close" onclick="closeContactModal()">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <form class="contact-form" onsubmit="submitContactForm(event)">
+                            <div class="form-group">
+                                <label for="nome">Nome *</label>
+                                <input type="text" id="nome" name="nome" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email">Email *</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="telefone">Telefone *</label>
+                                <input type="tel" id="telefone" name="telefone" required placeholder="(47) 99999-9999">
+                            </div>
+                            
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="whatsapp" name="whatsapp">
+                                <label for="whatsapp">Prefiro contato via WhatsApp</label>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="mensagem">Mensagem *</label>
+                                <textarea id="mensagem" name="mensagem" required placeholder="Conte-nos como podemos ajudá-lo..."></textarea>
+                            </div>
+                            
+                            <button type="submit" class="submit-btn">Enviar Mensagem</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main -->
+    <main>
+        <!-- Hero -->
+        <section class="hero-section">
+            <div class="swiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <img src="./styles/assets/1.png" alt="Imagem 1">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="./styles/assets/2.png" alt="Imagem 2">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="./styles/assets/3.png" alt="Imagem 3">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="./styles/assets/4.png" alt="Imagem 4">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="./styles/assets/5.png" alt="Imagem 5">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="./styles/assets/6.png" alt="Imagem 6">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="./styles/assets/7.png" alt="Imagem 7">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="./styles/assets/8.png" alt="Imagem 8">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="./styles/assets/9.png" alt="Imagem 9">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="./styles/assets/10.png" alt="Imagem 10">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="./styles/assets/11.png" alt="Imagem 11">
+                    </div>
+                </div>
+                
+                <div class="hero-content">
+                    <h1 class="hero-title">Encontre o Imóvel dos Seus Sonhos</h1>
+                    <p class="hero-subtitle">Morar bem nunca foi tão fácil</p>
+                    <a href="#properties" class="hero-cta">
+                        <span>Ver Imóveis</span>
+                        <span class="cta-arrow">→</span>
+                    </a>
+                </div>
+                
+                <div class="swiper-pagination"></div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+        </section>
+
+        <!-- Search -->
+        <section class="search-section">
+            <div class="container">
+                <div class="search-header">
+                    <h2 class="search-title">Seu próximo lar <span class="highlight">começa aqui!</span></h2>
+                    <p class="search-subtitle">Personalize sua busca e veja só o que tem a ver com você.</p>
+                </div>
+    
+                <form class="searching" action="https://www.rasseteimoveis.com.br/imoveis/buscar" method="POST">
+                    <input type="hidden" name="_token" value="Lbx4VWRN4TK9cIh2voh7qfRjH5TM5G4QIcBjxXF6">
+                    
+                    <div class="search-row">
+                        <select id="negotiation" class="form-control" name="negociacao[]">
+                            <option value="">Negociação</option>
+                            <option value="locacao">Aluguel</option>
+                            <option value="venda">Venda</option>
+                        </select>
+                        
+                        <select class="form-control" name="tipoimovel[]">
+                            <option value="">Tipo de Imóvel</option>
+                            <option value="4888::apartamento">Apartamento</option>
+                            <option value="4889::casa">Casa</option>
+                            <option value="4893::chacara-sitio">Chácara / Sítio</option>
+                            <option value="4892::galpao">Galpão</option>
+                            <option value="4891::sala-comercial">Sala Comercial</option>
+                            <option value="4890::terreno">Terreno</option>
+                        </select>
+                        
+                        <select id="load_neighborhoods" class="form-control" name="cidade">
+                            <option value="">Cidade</option>
+                            <option value="balneario-camboriu">Balneário Camboriú</option>
+                            <option value="balneario-picarras">Balneário Piçarras</option>
+                            <option value="barra-velha">Barra Velha</option>
+                            <option value="bombinhas">Bombinhas</option>
+                            <option value="indaial">Indaial</option>
+                            <option value="itajai">Itajaí</option>
+                            <option value="navegantes">Navegantes</option>
+                            <option value="penha">Penha</option>
+                            <option value="sao-bento-do-sul">São Bento do Sul</option>
+                        </select>
+                        
+                        <select id="neighborhood" class="form-control" name="bairros[]">
+                            <option value="">Bairro</option>
+                            <option value="centro">Centro</option>
+                            <option value="pioneiros">Pioneiros</option>
+                            <option value="nações">Nações</option>
+                            <option value="estados">Estados</option>
+                            <option value="praia-brava">Praia Brava</option>
+                        </select>
+                    </div>
+                    
+                    <div class="search-row">
+                        <select class="form-control" name="dormitorios[]">
+                            <option value="">Dormitórios</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                        </select>
+                        
+                        <input type="text" class="form-control" name="valormin" placeholder="Valor Mínimo">
+                        <input type="text" class="form-control" name="valormax" placeholder="Valor Máximo">
+                        <input type="text" class="form-control" name="codigo" placeholder="Buscar por código">
+                    </div>
+    
+                    <div class="search-button-container" style="align-self: center;">
+                        <button type="submit" class="btn-search">BUSCAR</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- Catalog -->
+        <section class="property-catalog" id="properties">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title-catalog">Catálogo de Imóveis</h2>
+                    <p class="section-subtitle-catalog">Selecionamos opções que podem ser perfeitas para morar ou investir.</p>
+                    
+                    <ul class="catalog-tabs">
+                        <li><a href="#" class="tab-button active" data-tab="venda">Venda</a></li>
+                        <li><a href="#" class="tab-button" data-tab="locacao">Locação</a></li>
+                    </ul>
+                </div>
+        
+                <div class="tab-content active" id="tab-venda">
+                    <div class="properties-grid">
+                        <!-- Sell -->
+                        <div class="property-card">
+                            <div class="property-image">
+                                <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Apartamento Frente Mar">
+                                <div class="property-badge">Cód. 940</div>
+                                <button class="favorite-btn">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                            </div>
+                            <div class="property-content">
+                                <h3 class="property-title">
+                                    <a href="#">Apartamento Frente Mar no Residencial Ilha de Manhattan</a>
+                                </h3>
+                                <div class="property-location">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>Centro - Navegantes/SC</span>
+                                </div>
+                                <div class="property-price">
+                                    <div class="price-sale">R$ 2.950.000,00</div>
+                                </div>
+                                <div class="property-features">
+                                    <div class="feature-item">
+                                        <i class="fas fa-arrows-alt"></i>
+                                        <span>162.93m²</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-bed"></i>
+                                        <span>3</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-shower"></i>
+                                        <span>3</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-car"></i>
+                                        <span>2</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+        
+                        <div class="property-card">
+                            <div class="property-image">
+                                <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Apartamento Ocean Towers">
+                                <div class="property-badge">Cód. 1278</div>
+                                <button class="favorite-btn">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                            </div>
+                            <div class="property-content">
+                                <h3 class="property-title">
+                                    <a href="#">Apartamento Frente Mar no Ocean Towers</a>
+                                </h3>
+                                <div class="property-location">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>Gravatá - Navegantes/SC</span>
+                                </div>
+                                <div class="property-price">
+                                    <div class="price-sale">R$ 1.550.000,00</div>
+                                </div>
+                                <div class="property-features">
+                                    <div class="feature-item">
+                                        <i class="fas fa-arrows-alt"></i>
+                                        <span>135.89m²</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-bed"></i>
+                                        <span>3</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-shower"></i>
+                                        <span>3</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-car"></i>
+                                        <span>3</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+        
+                        <div class="property-card">
+                            <div class="property-image">
+                                <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Casa Centro Navegantes">
+                                <div class="property-badge">Cód. 994</div>
+                                <button class="favorite-btn">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                            </div>
+                            <div class="property-content">
+                                <h3 class="property-title">
+                                    <a href="#">Casa com Excelente Localização no Centro de Navegantes</a>
+                                </h3>
+                                <div class="property-location">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>Centro - Navegantes/SC</span>
+                                </div>
+                                <div class="property-price">
+                                    <div class="price-sale">R$ 595.000,00</div>
+                                </div>
+                                <div class="property-features">
+                                    <div class="feature-item">
+                                        <i class="fas fa-arrows-alt"></i>
+                                        <span>271.70m²</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-bed"></i>
+                                        <span>-</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-shower"></i>
+                                        <span>-</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-car"></i>
+                                        <span>-</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+        
+                        <div class="property-card">
+                            <div class="property-image">
+                                <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Apartamento Saint Tropez">
+                                <div class="property-badge">Cód. 960</div>
+                                <button class="favorite-btn">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                            </div>
+                            <div class="property-content">
+                                <h3 class="property-title">
+                                    <a href="#">Apartamento no Residencial Saint Tropez</a>
+                                </h3>
+                                <div class="property-location">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>Meia Praia - Navegantes/SC</span>
+                                </div>
+                                <div class="property-price">
+                                    <div class="price-sale">A partir de R$ 710.000,00</div>
+                                </div>
+                                <div class="property-features">
+                                    <div class="feature-item">
+                                        <i class="fas fa-arrows-alt"></i>
+                                        <span>72.00m²</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-bed"></i>
+                                        <span>2</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-shower"></i>
+                                        <span>2</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-car"></i>
+                                        <span>1</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+        
+                        <div class="property-card">
+                            <div class="property-image">
+                                <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Casa de Luxo Vista Mar">
+                                <div class="property-badge">Cód. 1305</div>
+                                <button class="favorite-btn">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                            </div>
+                            <div class="property-content">
+                                <h3 class="property-title">
+                                    <a href="#">Casa de Luxo com Vista Panorâmica do Mar</a>
+                                </h3>
+                                <div class="property-location">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>Meia Praia - Navegantes/SC</span>
+                                </div>
+                                <div class="property-price">
+                                    <div class="price-sale">R$ 3.200.000,00</div>
+                                </div>
+                                <div class="property-features">
+                                    <div class="feature-item">
+                                        <i class="fas fa-arrows-alt"></i>
+                                        <span>420.50m²</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-bed"></i>
+                                        <span>5</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-shower"></i>
+                                        <span>4</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-car"></i>
+                                        <span>4</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+        
+                        <div class="property-card">
+                            <div class="property-image">
+                                <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Cobertura Duplex Marina">
+                                <div class="property-badge">Cód. 1312</div>
+                                <button class="favorite-btn">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                            </div>
+                            <div class="property-content">
+                                <h3 class="property-title">
+                                    <a href="#">Cobertura Duplex com Piscina Privativa no Marina Residence</a>
+                                </h3>
+                                <div class="property-location">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>Gravatá - Navegantes/SC</span>
+                                </div>
+                                <div class="property-price">
+                                    <div class="price-sale">R$ 2.750.000,00</div>
+                                </div>
+                                <div class="property-features">
+                                    <div class="feature-item">
+                                        <i class="fas fa-arrows-alt"></i>
+                                        <span>195.80m²</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-bed"></i>
+                                        <span>4</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-shower"></i>
+                                        <span>4</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-car"></i>
+                                        <span>3</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="tab-content" id="tab-locacao">
+                    <div class="properties-grid">
+                        <!-- Rent -->
+                        <div class="property-card">
+                            <div class="property-image">
+                                <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Casa Frente Mar">
+                                <div class="property-badge">Cód. 1167</div>
+                                <button class="favorite-btn">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                            </div>
+                            <div class="property-content">
+                                <h3 class="property-title">
+                                    <a href="#">Casa Frente Mar no Bairro Meia Praia</a>
+                                </h3>
+                                <div class="property-location">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>Meia Praia - Navegantes/SC</span>
+                                </div>
+                                <div class="property-price">
+                                    <div class="price-rent">R$ 7.000,00/mês</div>
+                                    <div class="price-sale">Venda: R$ 2.400.000,00</div>
+                                </div>
+                                <div class="property-features">
+                                    <div class="feature-item">
+                                        <i class="fas fa-arrows-alt"></i>
+                                        <span>650.00m²</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-bed"></i>
+                                        <span>4</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-shower"></i>
+                                        <span>2</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-car"></i>
+                                        <span>3</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+        
+                        <div class="property-card">
+                            <div class="property-image">
+                                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Apartamento Al Mare">
+                                <div class="property-badge">Cód. 1083</div>
+                                <button class="favorite-btn">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                            </div>
+                            <div class="property-content">
+                                <h3 class="property-title">
+                                    <a href="#">Apartamento no Residencial Al Mare Beach Front</a>
+                                </h3>
+                                <div class="property-location">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>Itacolomi - Balneário Piçarras/SC</span>
+                                </div>
+                                <div class="property-price">
+                                    <div class="price-rent">R$ 5.000,00/mês</div>
+                                    <div class="price-sale">Venda: R$ 1.980.000,00</div>
+                                </div>
+                                <div class="property-features">
+                                    <div class="feature-item">
+                                        <i class="fas fa-arrows-alt"></i>
+                                        <span>127.93m²</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-bed"></i>
+                                        <span>3</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-shower"></i>
+                                        <span>3</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-car"></i>
+                                        <span>2</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+        
+                        <div class="property-card">
+                            <div class="property-image">
+                                <img src="https://images.unsplash.com/photo-1613977257363-707ba9348227?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Apartamento Moderno Vista Mar">
+                                <div class="property-badge">Cód. 1320</div>
+                                <button class="favorite-btn">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                            </div>
+                            <div class="property-content">
+                                <h3 class="property-title">
+                                    <a href="#">Apartamento Moderno com Vista Mar no Edifício Atlântico</a>
+                                </h3>
+                                <div class="property-location">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>Centro - Navegantes/SC</span>
+                                </div>
+                                <div class="property-price">
+                                    <div class="price-rent">R$ 4.200,00/mês</div>
+                                    <div class="price-sale">Venda: R$ 1.650.000,00</div>
+                                </div>
+                                <div class="property-features">
+                                    <div class="feature-item">
+                                        <i class="fas fa-arrows-alt"></i>
+                                        <span>98.50m²</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-bed"></i>
+                                        <span>2</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-shower"></i>
+                                        <span>2</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-car"></i>
+                                        <span>2</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+        
+                        <div class="property-card">
+                            <div class="property-image">
+                                <img src="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Casa Condomínio Fechado">
+                                <div class="property-badge">Cód. 1285</div>
+                                <button class="favorite-btn">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                            </div>
+                            <div class="property-content">
+                                <h3 class="property-title">
+                                    <a href="#">Casa em Condomínio Fechado Residencial Águas Claras</a>
+                                </h3>
+                                <div class="property-location">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>Meia Praia - Navegantes/SC</span>
+                                </div>
+                                <div class="property-price">
+                                    <div class="price-rent">R$ 3.800,00/mês</div>
+                                    <div class="price-sale">Venda: R$ 1.200.000,00</div>
+                                </div>
+                                <div class="property-features">
+                                    <div class="feature-item">
+                                        <i class="fas fa-arrows-alt"></i>
+                                        <span>180.25m²</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-bed"></i>
+                                        <span>3</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-shower"></i>
+                                        <span>3</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-car"></i>
+                                        <span>2</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+        
+                        <div class="property-card">
+                            <div class="property-image">
+                                <img src="https://images.unsplash.com/photo-1622015663319-e97e697503ee?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Studio Mobiliado Centro">
+                                <div class="property-badge">Cód. 1299</div>
+                                <button class="favorite-btn">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                            </div>
+                            <div class="property-content">
+                                <h3 class="property-title">
+                                    <a href="#">Studio Mobiliado e Equipado no Centro Comercial</a>
+                                </h3>
+                                <div class="property-location">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>Centro - Navegantes/SC</span>
+                                </div>
+                                <div class="property-price">
+                                    <div class="price-rent">R$ 2.100,00/mês</div>
+                                    <div class="price-sale">Venda: R$ 350.000,00</div>
+                                </div>
+                                <div class="property-features">
+                                    <div class="feature-item">
+                                        <i class="fas fa-arrows-alt"></i>
+                                        <span>35.00m²</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-bed"></i>
+                                        <span>1</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-shower"></i>
+                                        <span>1</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-car"></i>
+                                        <span>1</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+        
+                        <div class="property-card">
+                            <div class="property-image">
+                                <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Apartamento Familiar Temporada">
+                                <div class="property-badge">Cód. 1354</div>
+                                <button class="favorite-btn">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                            </div>
+                            <div class="property-content">
+                                <h3 class="property-title">
+                                    <a href="#">Apartamento Familiar para Temporada no Residencial Costa Brava</a>
+                                </h3>
+                                <div class="property-location">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>Meia Praia - Navegantes/SC</span>
+                                </div>
+                                <div class="property-price">
+                                    <div class="price-rent">R$ 4.800,00/mês</div>
+                                    <div class="price-sale">Venda: R$ 1.450.000,00</div>
+                                </div>
+                                <div class="property-features">
+                                    <div class="feature-item">
+                                        <i class="fas fa-arrows-alt"></i>
+                                        <span>112.75m²</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-bed"></i>
+                                        <span>3</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-shower"></i>
+                                        <span>2</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-car"></i>
+                                        <span>2</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="view-more">
+                    <a href="#" class="view-more-btn">
+                        <span>Ver todos os imóveis</span>
+                        <span class="arrow">→</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Financing -->
+        <section class="financing-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Financiamento <span class="highlight-financing">Imobiliário</span></h2>
+                    <p class="section-subtitle">Simule seu financiamento de forma totalmente flexível ou fale com um especialista para encontrar a melhor opção para você.</p>
+                </div>
+    
+                <div class="banks-grid">
+                    <a href="#" class="bank-card featured" onclick="openFinancingModal()">
+                        <img src="https://www.rasseteimoveis.com.br/assets/img/financiamento/financiamento.png" alt="Simulação Financiamento" class="bank-logo">
+                        <div class="bank-name">Nossa Simulação</div>
+                    </a>
+    
+                    <a href="http://www8.caixa.gov.br/siopiinternet-web/simulaOperacaoInternet.do?method=inicializarCasoUso" target="_blank" class="bank-card">
+                        <img src="https://www.rasseteimoveis.com.br/assets/img/financiamento/bcaixa.png" alt="Caixa Econômica" class="bank-logo">
+                        <div class="bank-name">Caixa Econômica</div>
+                    </a>
+    
+                    <a href="https://www.negociosimobiliarios.santander.com.br/negociosimobiliarios/#/dados-pessoais" target="_blank" class="bank-card">
+                        <img src="https://www.rasseteimoveis.com.br/assets/img/financiamento/bsantander.png" alt="Santander" class="bank-logo">
+                        <div class="bank-name">Santander</div>
+                    </a>
+    
+                    <a href="https://www42.bb.com.br/portalbb/imobiliario/creditoimobiliario/simular,802,2250,2250.bbx" target="_blank" class="bank-card">
+                        <img src="https://www.rasseteimoveis.com.br/assets/img/financiamento/bbrasil.png" alt="Banco do Brasil" class="bank-logo">
+                        <div class="bank-name">Banco do Brasil</div>
+                    </a>
+    
+                    <a href="https://banco.bradesco/html/classic/produtos-servicos/emprestimo-e-financiamento/encontre-seu-credito/simuladores-imoveis.shtm" target="_blank" class="bank-card">
+                        <img src="https://www.rasseteimoveis.com.br/assets/img/financiamento/bbradesco.png" alt="Bradesco" class="bank-logo">
+                        <div class="bank-name">Bradesco</div>
+                    </a>
+    
+                    <a href="https://credito-imobiliario.itau.com.br" target="_blank" class="bank-card">
+                        <img src="https://www.rasseteimoveis.com.br/assets/img/financiamento/bitau.png" alt="Itaú" class="bank-logo">
+                        <div class="bank-name">Itaú</div>
+                    </a>
+                </div>
+    
+                <div class="financing-cta">
+                    <p class="cta-text">Precisa de ajuda para escolher a melhor opção?</p>
+                    <a href="https://wa.me/5547999776007" target="_blank" class="cta-button">
+                        <span>Fale com um especialista</span>
+                        <span class="arrow">→</span>
+                    </a>
+                </div>
+
+                <!-- Financing Modal -->
+                <div id="financingModal" class="financing-modal">
+                <div class="financing-modal-content">
+                    <div class="financing-modal-header">
+                        <h2 class="financing-modal-title">Simule seu Financiamento</h2>
+                        <span class="financing-modal-close" onclick="closeFinancingModal()">&times;</span>
+                    </div>
+                    <div class="financing-modal-body">
+                        <form class="financing-contact-form" action="https://www.rasseteimoveis.com.br/simular-financiamento/enviar" method="POST">
+                            <input type="hidden" name="_token" value="sbCS0hGBs8ILnmV7kxDZ4L1nvcl8lH8cF0teOMwq">
+                            
+                            <div class="financing-form-row">
+                                <div class="financing-form-group">
+                                    <label for="nome">Nome Completo *</label>
+                                    <input type="text" class="financing-form-control" id="nome" name="nome" placeholder="Digite seu nome completo" required>
+                                </div>
+                                <div class="financing-form-group">
+                                    <label for="cpf">CPF *</label>
+                                    <input type="text" data-mask="000.000.000-00" name="cpf" id="cpf" class="financing-form-control" placeholder="000.000.000-00" required autocomplete="off" maxlength="14">
+                                </div>
+                            </div>
+                            
+                            <div class="financing-form-row">
+                                <div class="financing-form-group">
+                                    <label for="nascimento">Data de Nascimento *</label>
+                                    <input type="text" data-mask="00/00/0000" name="nascimento" id="nascimento" class="financing-form-control" placeholder="DD/MM/AAAA" required autocomplete="off" maxlength="10">
+                                </div>
+                                <div class="financing-form-group">
+                                    <label for="estadocivil">Estado Civil *</label>
+                                    <input type="text" class="financing-form-control" id="estadocivil" name="estadocivil" placeholder="Ex: Solteiro(a), Casado(a)" required>
+                                </div>
+                            </div>
+                            
+                            <div class="financing-form-row">
+                                <div class="financing-form-group">
+                                    <label for="cidade">Cidade/UF *</label>
+                                    <input type="text" class="financing-form-control" id="cidade" name="cidade" placeholder="Ex: São Paulo/SP" required>
+                                </div>
+                                <div class="financing-form-group">
+                                    <label for="telefone">Telefone *</label>
+                                    <input type="text" class="financing-form-control phone" id="telefone" name="telefone" placeholder="(00) 00000-0000" required maxlength="15">
+                                </div>
+                            </div>
+
+                            <div class="financing-checkbox-row">
+                                <div class="financing-checkbox-group">
+                                    <input type="checkbox" name="resposta" value="S" id="whatsapp-checkbox">
+                                    <label for="whatsapp-checkbox">
+                                        Desejo que o contato seja via WhatsApp 
+                                        <i class="fab fa-whatsapp financing-whatsapp-icon"></i>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="financing-form-row full-width">
+                                <div class="financing-form-group">
+                                    <label for="email">E-mail *</label>
+                                    <input type="email" class="financing-form-control" id="email" name="email" placeholder="seu@email.com" required>
+                                </div>
+                            </div>
+                            
+                            <div class="financing-form-row">
+                                <div class="financing-form-group">
+                                    <label for="rendamensal">Renda Mensal *</label>
+                                    <input type="text" data-mask="#.##0,00" data-mask-reverse="true" name="rendamensal" id="rendamensal" maxlength="16" class="financing-form-control" placeholder="R$ 0,00" required autocomplete="off">
+                                </div>
+                                <div class="financing-form-group">
+                                    <label for="fgts">Saldo FGTS</label>
+                                    <input type="text" data-mask="#.##0,00" data-mask-reverse="true" name="fgts" id="fgts" maxlength="16" class="financing-form-control" placeholder="R$ 0,00" autocomplete="off">
+                                </div>
+                            </div>
+                            
+                            <div class="financing-form-row full-width">
+                                <div class="financing-form-group">
+                                    <label for="valorpretendido">Valor do Imóvel Pretendido *</label>
+                                    <input type="text" data-mask="#.##0,00" data-mask-reverse="true" name="valorpretendido" id="valorpretendido" maxlength="16" class="financing-form-control" placeholder="R$ 0,00" required autocomplete="off">
+                                </div>
+                            </div>
+
+                            <div class="financing-form-submit">
+                                <button type="submit" class="financing-btn-submit">
+                                    <span>Enviar Dados</span>
+                                    <span class="arrow">→</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </section>
+
+        <!-- Advert -->
+        <section class="cta-section loading">
+            <div class="particles"></div>
+            
+            <div class="ad-container">
+                <a href="https://www.rasseteimoveis.com.br/anuncie-seu-imovel" class="cta-minimal">
+                    <div class="stats">
+                        <span class="counter" data-target="1247">0</span> imóveis anunciados
+                    </div>
+                    
+                    <div class="minimal-content">
+                        <div class="minimal-text">
+                            <h2 class="minimal-title">Tem um imóvel para anunciar?</h2>
+                            <p class="minimal-subtitle">Alcance milhares de pessoas interessadas</p>
+                            <div class="minimal-arrow">→</div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section contact-section">
+                    <h3 class="contact-title">Contato</h3>
+                    <ul>
+                        <li>Avenida Prefeito Cirino Adolfo Cabral, 9077</li>
+                        <li>Sala 01 • CEP: 88.372-612</li>
+                        <li>Gravatá - Navegantes/SC</li>
+                        <li class="phone-group">
+                            <i class="fas fa-phone"></i>
+                            <a href="tel:+554730657794">(47) 3065-7794</a> / 
+                            <a href="tel:+554730117771">(47) 3011-7771</a>
+                        </li>
+                        <li class="mobile-group">
+                            <i class="fas fa-mobile-alt"></i>
+                            <span style="white-space: nowrap;">
+                                <a href="tel:+5547999776007">(47) 99977-6007</a> / 
+                                <a href="tel:+5547988719600">(47) 98871-9600</a> / 
+                                <a href="tel:+5547984061639">(47) 98406-1639</a>
+                            </span>
+                        </li>
+                        <li><a href="mailto:contato@rasseteimoveis.com.br">contato@rasseteimoveis.com.br</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section indicator">
+                    <h3 class="indicator-title">Indicador</h3>
+                    <div class="indicator-content">
+                        CUB/SC - Março/2025<br>
+                        <span class="price">R$ 2.907,85</span> +0,23%
+                    </div>
+                </div>
+
+                <div class="footer-section social">
+                    <a href="https://pt-br.facebook.com/rasseteimoveis" target="_blank" class="social-link facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://www.instagram.com/rasseteimoveis" target="_blank" class="social-link instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://wa.me/5547999776007" target="_blank" class="social-link whatsapp">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 Rassete Imóveis. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="styles/bootstrap-5.3.3-dist/js/bootstrap.min.js"></script>
+    <script src="scripts/script.js"></script>
+</body>
+</html>

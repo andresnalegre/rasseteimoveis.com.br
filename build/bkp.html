@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Rassete Imóveis</title>
+  <link rel="stylesheet" href="styles/bootstrap.min.css">
+  <link rel="stylesheet" href="styles/style.css">
+  <link rel="stylesheet" href="styles/header1.css">
+  <link rel="stylesheet" href="styles/navbar.css">
+  <link rel="stylesheet" href="styles/responsive.css">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon.png">
+  <meta name="theme-color" content="#ffffff">
+</head>
+<body>
+    <header id="header-container">
+        <div class="contact-bar">
+            <div class="marquee">
+                <ul class="contact-info-list">
+                    <li class="message-1">Novos lançamentos para 2025 estão chegando!</li>
+                    <li class="message-2">Visite nosso site para ofertas exclusivas!</li>
+                    <li class="message-3">Entre em contato: (47) 99977-6007</li>
+                    <li class="message-4">Assine nossa newsletter para novidades!</li>
+                    <li class="message-5">Imóveis com condições especiais de financiamento!</li>
+                </ul>
+            </div>
+        </div>
+    
+        <nav class="navbar navbar-expand-lg navbar-light bg-white sticky">
+            <div class="container">
+                <a class="brand" href="https://www.rasseteimoveis.com.br">
+                    <img class="logo" src="https://static.useimobia.com.br/967/sites/109/Z4x7bTkDZZtX3pLbWilHJjKZodXAhTz5yiDEdwAk.png" alt="Rassete Imóveis Logo">
+                </a>
+                <button class="toggler" type="button" data-toggle="collapse" data-target="#navbarMenu" aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarMenu">
+                    <ul class="nav-list ml-auto">
+                        <li class="menu-item"><a class="menu-link" href="/index.html">Início</a></li>
+                        <li class="menu-item"><a class="menu-link" href="/quem-somos">Quem Somos</a></li>
+                        <li class="menu-item dropdown">
+                            <a class="menu-link dropdown-toggle" href="#" id="dropdownMenu" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Imóveis <i class="fa fa-angle-down"></i>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenu">
+                                <a class="dropdown-item" href="/imoveis/negociacao/locacao">Aluguel</a>
+                                <a class="dropdown-item" href="/imoveis/negociacao/venda">Venda</a>
+                            </div>
+                        </li>
+                        <li class="menu-item"><a class="menu-link" href="/fale-conosco">Fale Conosco</a></li>
+                        <li class="menu-item"><a class="menu-link" href="/imoveis/favoritos"><i class="lni-star-filled"></i> Favoritos</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+  
+    <div id="main-slide" class="carousel slide" data-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img class="d-block w-100" src="https://static.useimobia.com.br/967/sites/109/grupo-imagem/125/imagem/2.jpeg" alt="Slide 1">
+        </div>
+        <!-- Add more carousel items as needed -->
+      </div>
+    </div>
+  
+    <div class="container-fluid bg-light">
+      <div class="container">
+        <form class="buscando" action="https://www.rasseteimoveis.com.br/imoveis/buscar" method="POST">
+          <input type="hidden" name="_token" value="Lbx4VWRN4TK9cIh2voh7qfRjH5TM5G4QIcBjxXF6">
+          <div class="row">
+            <div class="col-md-10">
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <select id="negociacao" class="form-control" name="negociacao[]">
+                      <option value="">Negociação</option>
+                      <option value="locacao">Aluguel</option>
+                      <option value="venda">Venda</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <select class="form-control" multiple name="tipoimovel[]">
+                      <option value="4888::apartamento">Apartamento</option>
+                      <option value="4889::casa">Casa</option>
+                      <option value="4893::chacara-sitio">Chácara / Sítio</option>
+                      <option value="4892::galpao">Galpão</option>
+                      <option value="4891::sala-comercial">Sala Comercial</option>
+                      <option value="4890::terreno">Terreno</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <select id="carrega_bairros" class="form-control" name="cidade">
+                      <option value="">Cidade</option>
+                      <option value="balneario-camboriu">Balneário Camboriú</option>
+                      <option value="balneario-picarras">Balneário Piçarras</option>
+                      <option value="barra-velha">Barra Velha</option>
+                      <option value="bombinhas">Bombinhas</option>
+                      <option value="indaial">Indaial</option>
+                      <option value="itajai">Itajaí</option>
+                      <option value="navegantes">Navegantes</option>
+                      <option value="penha">Penha</option>
+                      <option value="sao-bento-do-sul">São Bento do Sul</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <select id="bairro" class="form-control" multiple name="bairros[]">
+                      <option value="">Bairro</option>
+                      <!-- Add more options as needed -->
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <select class="form-control" multiple name="dormitorios[]">
+                      <option value="">Dormitórios</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
+                      <option value="7">7</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <input type="text" id="valor_min" class="form-control" name="valormin" placeholder="Valor Mínimo" disabled>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <input type="text" id="valor_max" class="form-control" name="valormax" placeholder="Valor Máximo" disabled>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <input type="text" class="form-control" name="codigo" placeholder="Buscar por código">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-2">
+              <div class="form-group text-center">
+                <button type="submit" class="btn btn-primary btn-block">Buscar</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  
+    <section class="latest-property section-padding">
+      <div class="container">
+        <div class="row">
+          <div class="col-12 text-center">
+            <h2 class="section-title">Imóveis em <span class="text-primary">Destaque</span></h2>
+            <p>Selecionamos algumas das melhores opções para você morar ou investir.</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div id="tabpanel" role="tabpanel">
+              <ul class="nav nav-tabs justify-content-center" role="tablist">
+                <li class="nav-item">
+                  <a class="nav-link active" href="#tab-venda" role="tab" data-toggle="tab">Venda</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#tab-locacao" role="tab" data-toggle="tab">Locação</a>
+                </li>
+              </ul>
+              <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="tab-venda">
+                  <div id="imoveis-venda" class="owl-carousel">
+                    <!-- Add property items here -->
+                  </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="tab-locacao">
+                  <div id="imoveis-locacao" class="owl-carousel">
+                    <!-- Add property items here -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  
+    <footer id="footer" class="footer-area section-padding text-center">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-4 col-md-6">
+            <h3 class="footer-title">Entre <span>em Contato</span></h3>
+            <ul class="address">
+              <li>
+                <a>
+                  <i class="lni-map-marker"></i>
+                  Avenida Prefeito Cirino Adolfo Cabral, 9077<br>
+                  Sala 01<br>
+                  CEP: 88.372-612<br>
+                  Gravatá - Navegantes/SC
+                </a>
+              </li>
+              <li>
+                <a>
+                  <i class="lni-phone-handset"></i> (47) 3065-7794
+                </a>
+              </li>
+              <li>
+                <a href="mailto:contato@rasseteimoveis.com.br"><i class="lni-envelope"></i> contato@rasseteimoveis.com.br</a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <h3 class="footer-title">Indicadores <span>Financeiros</span></h3>
+            <p>CUB/SC - Março/2025<br>R$ 2.907,85 - +0,23%</p>
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <div class="social-icon">
+              <a class="facebook" href="https://pt-br.facebook.com/rasseteimoveis" target="_blank"><i class="lni-facebook-filled"></i></a>
+              <a class="instagram" href="https://www.instagram.com/rasseteimoveis" target="_blank"><i class="lni-instagram-filled"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  
+    <section id="copyright">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 text-center">
+            <p>
+              <a href="https://www.useimobia.com.br" target="_blank">
+                <img src="https://www.rasseteimoveis.com.br/assets/img/imobia.png" alt="Imobia - Sistema Imobiliário">
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  
+    <div class="side-fixed">
+      <div class="fixed-whats small">
+        <a href="https://api.whatsapp.com/send?phone=5547999776007&amp;text=Ol%C3%A1%2C%20gostaria%20de%20falar%20com%20algum%20corretor." target="_blank">
+          <div class="fixed-infos">
+            <h4>Chame no WhatsApp</h4>
+            <p>(47) 99977-6007</p>
+          </div>
+        </a>
+      </div>
+      <div class="fixed-facebook small">
+        <a href="https://pt-br.facebook.com/rasseteimoveis" target="_blank">
+          <div class="fixed-infos">
+            <h4>Facebook</h4>
+            <p>Curta nossa página</p>
+          </div>
+        </a>
+      </div>
+      <div class="fixed-instagram small">
+        <a href="https://www.instagram.com/rasseteimoveis" target="_blank">
+          <div class="fixed-infos">
+            <h4>Instagram</h4>
+            <p>Siga a gente</p>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.min.js"></script>
+    <script src="scripts/script.js"></script>
+    
+  </body>
+</html>

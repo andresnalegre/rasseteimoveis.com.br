@@ -1,0 +1,32 @@
+// Primeiro, desabilita o bloqueio do textarea
+document.querySelector('.ChatInput_textarea__QUOCH').disabled = false;
+
+// Substitui a mensagem de limite de uso por "IS OK NOW!"
+const limitMessage = document.querySelector('.rt-Text.rt-r-size-2.rt-r-ta-center');
+if (limitMessage) {
+    limitMessage.innerHTML = 'IS OK NOW!';
+}
+
+// Habilita o botão de envio de mensagem
+const sendButton = document.querySelector('.rt-Flex.rt-r-ai-center.rt-r-gap-3.rt-r-ml button');
+if (sendButton) {
+    sendButton.disabled = false; // Remove a desativação do botão
+    sendButton.classList.remove('cursor-not-allowed'); // Remove a classe de cursor bloqueado
+    sendButton.classList.add('cursor-pointer'); // Adiciona uma classe de cursor permitida
+    sendButton.style.pointerEvents = 'auto'; // Garante que o evento de clique esteja habilitado
+}
+
+----------
+
+// Seleciona o botão
+const sendButton = document.querySelector('.rt-Flex.rt-r-ai-center.rt-r-gap-3.rt-r-ml button');
+
+// Habilita o botão
+if (sendButton) {
+    // Remove o atributo de desabilitação e as classes de cursor bloqueado
+    sendButton.removeAttribute('disabled');
+    sendButton.removeAttribute('data-disabled'); // Remove o atributo data-disabled
+    sendButton.classList.remove('cursor-not-allowed'); // Remove a classe de cursor bloqueado
+    sendButton.classList.add('cursor-pointer'); // Adiciona a classe de cursor permitido
+    sendButton.style.pointerEvents = 'auto'; // Garante que o evento de clique esteja habilitado
+}
