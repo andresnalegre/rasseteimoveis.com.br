@@ -228,7 +228,7 @@ body {
 .dropdown-item:hover,
 .dropdown-item:focus {
   background-color: #f0f0f0;
-  color: #007bff;
+  color: #004d40;
   border-radius: 5px;
 }
 
@@ -300,6 +300,7 @@ body {
 
 .close {
   position: absolute;
+  padding-bottom: 4px;
   top: 20px;
   right: 24px;
   color: white;
@@ -2470,6 +2471,7 @@ select.form-control:focus {
 .footer-bottom {
   text-align: center;
   margin-top: 1rem;
+  margin-bottom: -1rem;
   padding-top: 1rem;
   border-top: 1px solid #81c784;
 }

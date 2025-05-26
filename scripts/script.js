@@ -121,76 +121,230 @@ const GreenBannerModule = {
 };
 
 // Navbar
-$(document).ready(function() {
-    $('.menu').click(function() {
-        $('#navbarMenu').toggleClass('show');
-    });
+const NavbarModule = {
+    menuButton: null,
+    navbarMenu: null,
+    dropdownToggles: null,
+    dropdownMenus: null,
+    modals: {
+        quemSomos: null,
+        faleConosco: null
+    },
+    forms: {
+        contact: null
+    },
 
-    $('.dropdown-toggle').click(function(event) {
+    init() {
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => this.setup());
+        } else {
+            this.setup();
+        }
+    },
+
+    setup() {
+        this.cacheElements();
+        this.bindEvents();
+        this.setupKeyboardNavigation();
+    },
+
+    cacheElements() {
+        this.menuButton = document.querySelector('.menu');
+        this.navbarMenu = document.getElementById('navbarMenu');
+        this.dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+        this.dropdownMenus = document.querySelectorAll('.dropdown-menu');
+        this.modals.quemSomos = document.getElementById('quemSomosModal');
+        this.modals.faleConosco = document.getElementById('faleConoscoModal');
+        this.forms.contact = document.querySelector('.contact-form');
+
+        if (!this.menuButton || !this.navbarMenu) {
+            console.warn('NavbarModule: Elementos essenciais da navbar não encontrados');
+        }
+    },
+
+    bindEvents() {
+        if (this.menuButton && this.navbarMenu) {
+            this.menuButton.addEventListener('click', (event) => {
+                event.preventDefault();
+                this.toggleMenu();
+            });
+        }
+
+        this.dropdownToggles.forEach(toggle => {
+            toggle.addEventListener('click', (event) => this.handleDropdownToggle(event));
+        });
+
+        document.addEventListener('click', (event) => this.handleDocumentClick(event));
+        window.addEventListener('click', (event) => this.handleWindowClick(event));
+
+        if (this.forms.contact) {
+            this.forms.contact.addEventListener('submit', (event) => this.handleContactForm(event));
+        }
+    },
+
+    setupKeyboardNavigation() {
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                this.closeAllModals();
+                this.closeAllDropdowns();
+            }
+        });
+    },
+
+    toggleMenu() {
+        if (this.navbarMenu) {
+            this.navbarMenu.classList.toggle('show');
+        }
+        if (this.menuButton) {
+            this.menuButton.classList.toggle('opened');
+            this.menuButton.setAttribute('aria-expanded', this.menuButton.classList.contains('opened'));
+        }
+    },
+
+    closeMenu() {
+        if (this.navbarMenu) {
+            this.navbarMenu.classList.remove('show');
+        }
+        if (this.menuButton) {
+            this.menuButton.classList.remove('opened');
+            this.menuButton.setAttribute('aria-expanded', 'false');
+        }
+    },
+
+    handleDropdownToggle(event) {
         event.preventDefault();
         event.stopPropagation();
-        $(this).next('.dropdown-menu').toggleClass('show');
-    });
+        
+        const dropdown = event.target.nextElementSibling;
+        if (dropdown && dropdown.classList.contains('dropdown-menu')) {
+            this.closeAllDropdowns();
+            dropdown.classList.toggle('show');
+        }
+    },
 
-    $(document).click(function() {
-        $('.dropdown-menu').removeClass('show');
-    });
-});
+    closeAllDropdowns() {
+        this.dropdownMenus.forEach(menu => {
+            menu.classList.remove('show');
+        });
+    },
 
-//Navbar Modal
+    handleDocumentClick(event) {
+        if (!event.target.closest('.dropdown-toggle')) {
+            this.closeAllDropdowns();
+        }
+    },
+
+    openModal(modalType) {
+        const modal = this.modals[modalType];
+        if (modal) {
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+            
+            const firstFocusable = modal.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+            if (firstFocusable) {
+                firstFocusable.focus();
+            }
+        }
+    },
+
+    closeModal(modalType) {
+        const modal = this.modals[modalType];
+        if (modal) {
+            modal.classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+    },
+
+    closeAllModals() {
+        Object.keys(this.modals).forEach(modalType => {
+            this.closeModal(modalType);
+        });
+    },
+
+    handleWindowClick(event) {
+        if (event.target === this.modals.quemSomos) {
+            this.closeModal('quemSomos');
+        }
+        if (event.target === this.modals.faleConosco) {
+            this.closeModal('faleConosco');
+        }
+    },
+
+    handleContactForm(event) {
+        event.preventDefault();
+        
+        const formData = new FormData(event.target);
+        const contactData = {
+            nome: formData.get('nome'),
+            email: formData.get('email'),
+            telefone: formData.get('telefone'),
+            whatsapp: formData.get('whatsapp') ? 'Sim' : 'Não',
+            mensagem: formData.get('mensagem')
+        };
+        
+        this.submitContactData(contactData);
+        event.target.reset();
+        this.closeModal('faleConosco');
+    },
+
+    submitContactData(data) {
+        const message = `Mensagem enviada com sucesso!\n\nNome: ${data.nome}\nEmail: ${data.email}\nTelefone: ${data.telefone}\nWhatsApp: ${data.whatsapp}\nMensagem: ${data.mensagem}`;
+        alert(message);
+    },
+
+    isElementVisible(element) {
+        return element && element.offsetParent !== null;
+    },
+
+    api: {
+        openQuemSomosModal: () => NavbarModule.openModal('quemSomos'),
+        closeQuemSomosModal: () => NavbarModule.closeModal('quemSomos'),
+        openFaleConoscoModal: () => NavbarModule.openModal('faleConosco'),
+        closeFaleConoscoModal: () => NavbarModule.closeModal('faleConosco'),
+        toggleMenu: () => NavbarModule.toggleMenu(),
+        closeAllDropdowns: () => NavbarModule.closeAllDropdowns()
+    },
+
+    destroy() {
+        if (this.menuButton) {
+            this.menuButton.removeEventListener('click', this.toggleMenu);
+        }
+        
+        this.dropdownToggles.forEach(toggle => {
+            toggle.removeEventListener('click', this.handleDropdownToggle);
+        });
+        
+        document.removeEventListener('click', this.handleDocumentClick);
+        window.removeEventListener('click', this.handleWindowClick);
+        document.removeEventListener('keydown', this.setupKeyboardNavigation);
+        
+        if (this.forms.contact) {
+            this.forms.contact.removeEventListener('submit', this.handleContactForm);
+        }
+        
+        document.body.style.overflow = 'auto';
+    }
+};
+
 function openModal() {
-    document.getElementById('quemSomosModal').classList.add('show');
-    document.body.style.overflow = 'hidden';
+    NavbarModule.api.openQuemSomosModal();
 }
 
 function closeModal() {
-    document.getElementById('quemSomosModal').classList.remove('show');
-    document.body.style.overflow = 'auto';
+    NavbarModule.api.closeQuemSomosModal();
 }
 
 function openContactModal() {
-    document.getElementById('faleConoscoModal').classList.add('show');
-    document.body.style.overflow = 'hidden';
+    NavbarModule.api.openFaleConoscoModal();
 }
 
 function closeContactModal() {
-    document.getElementById('faleConoscoModal').classList.remove('show');
-    document.body.style.overflow = 'auto';
+    NavbarModule.api.closeFaleConoscoModal();
 }
 
 function submitContactForm(event) {
-    event.preventDefault();
-    
-    const formData = new FormData(event.target);
-    const nome = formData.get('nome');
-    const email = formData.get('email');
-    const telefone = formData.get('telefone');
-    const whatsapp = formData.get('whatsapp') ? 'Sim' : 'Não';
-    const mensagem = formData.get('mensagem');
-    
-    alert(`Mensagem enviada com sucesso!\n\nNome: ${nome}\nEmail: ${email}\nTelefone: ${telefone}\nWhatsApp: ${whatsapp}\nMensagem: ${mensagem}`);
-
-    event.target.reset();
-    closeContactModal();
+    NavbarModule.handleContactForm(event);
 }
-window.onclick = function(event) {
-    const modalQuemSomos = document.getElementById('quemSomosModal');
-    const modalFaleConosco = document.getElementById('faleConoscoModal');
-    
-    if (event.target === modalQuemSomos) {
-        closeModal();
-    }
-    if (event.target === modalFaleConosco) {
-        closeContactModal();
-    }
-}
-
-document.addEventListener('keydown', function(event) {
-    if (event.key === 'Escape') {
-        closeModal();
-        closeContactModal();
-    }
-});
 
 // Hero
 
@@ -632,3 +786,4 @@ function addSocialLink(platform, url, iconClass) {
 
 // Initialize the Green Banner Module
 GreenBannerModule.init();
+NavbarModule.init();
