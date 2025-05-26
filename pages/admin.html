@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Admin • Rassete Imóveis</title>
+    <link rel="stylesheet" href="../styles/bootstrap-5.3.3-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../styles/admin.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="../styles/assets/favicon.png">
+    <meta name="theme-color" content="#ffffff">
+    <style>
+        /* Admin specific styles */
+        body {
+            background-color: #f8f9fa;
+        }
+        
+        .admin-badge {
+            background: linear-gradient(135deg, #1fae4f, #17b978);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+        
+        .main-container {
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .card-header {
+            background-color: #1fae4f;
+            color: white;
+            border-radius: 1rem 1rem 0 0 !important;
+            font-weight: 600;
+        }
+        
+        .btn-primary {
+            background-color: #1fae4f;
+            border-color: #1fae4f;
+        }
+        
+        .btn-primary:hover {
+            background-color: #17b978;
+            border-color: #17b978;
+        }
+        
+        .table img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        
+        .status-badge {
+            font-size: 0.75rem;
+        }
+        
+        .modal-header {
+            background-color: #1fae4f;
+            color: white;
+        }
+        
+        .form-control:focus {
+            border-color: #1fae4f;
+            box-shadow: 0 0 0 0.2rem rgba(31, 174, 79, 0.25);
+        }
+        
+        .stats-card {
+            background: linear-gradient(135deg, #1fae4f, #17b978);
+            color: white;
+            border-radius: 1rem;
+        }
+        
+        .image-preview {
+            max-width: 100px;
+            max-height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin: 5px;
+        }
+        
+        /* Admin menu item styling */
+        .admin-menu-item {
+            background: linear-gradient(135deg, #1fae4f, #17b978);
+            border-radius: 0.5rem;
+            margin: 0 0.5rem;
+        }
+        
+        .admin-menu-item .menu-link {
+            color: white !important;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+        }
+        
+        .admin-menu-item .menu-link:hover {
+            color: #f8f9fa !important;
+        }
+    </style>
+</head>
+<body>
+    <header id="header-container">
+            <nav class="navbar navbar-expand-lg navbar-light bg-white sticky">
+            <div class="container">
+                <a class="brand" href="./index.html">
+                    <img class="logo" src="../styles/assets/logo.png" alt="Rassete Imóveis Logo">
+                </a>
+                <button class="menu" onclick="this.classList.toggle('opened');this.setAttribute('aria-expanded', this.classList.contains('opened'))" aria-label="Main Menu">
+                    <svg width="100" height="100" viewBox="0 0 100 100">
+                        <path class="line line1" d="M 20,29.000046 H 80.000231 C 80.000231,29.000046 94.498839,28.817352 94.532987,66.711331 94.543142,77.980673 90.966081,81.670246 85.259173,81.668997 79.552261,81.667751 75.000211,74.999942 75.000211,74.999942 L 25.000021,25.000058" />
+                        <path class="line line2" d="M 20,50 H 80" />
+                        <path class="line line3" d="M 20,70.999954 H 80.000231 C 80.000231,70.999954 94.498839,71.182648 94.532987,33.288669 94.543142,22.019327 90.966081,18.329754 85.259173,18.331003 79.552261,18.332249 75.000211,25.000058 75.000211,25.000058 L 25.000021,74.999942" />
+                    </svg>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarMenu">
+                    <ul class="nav-list ms-auto">
+                        <li class="menu-item admin-menu-item"><a class="menu-link" href="#dashboard">Dashboard</a></li>
+                        <li class="menu-item"><a class="menu-link" href="../index.html">Ver Site</a></li>
+                        <li class="menu-item"><a class="menu-link" onclick="logout()" style="cursor: pointer;">Sair</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container main-container">
+            
+            <!-- Stats Cards -->
+            <div class="row mb-4" id="dashboard">
+                <div class="col-md-3">
+                    <div class="card stats-card">
+                        <div class="card-body text-center">
+                            <i class="fas fa-home fs-1"></i>
+                            <h4 class="fw-bold mt-2" id="totalImoveis">0</h4>
+                            <p class="mb-0">Total de Imóveis</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card stats-card">
+                        <div class="card-body text-center">
+                            <i class="fas fa-check-circle fs-1"></i>
+                            <h4 class="fw-bold mt-2" id="imoveisDisponiveis">0</h4>
+                            <p class="mb-0">Disponíveis</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card stats-card">
+                        <div class="card-body text-center">
+                            <i class="fas fa-clock fs-1"></i>
+                            <h4 class="fw-bold mt-2" id="imoveisReservados">0</h4>
+                            <p class="mb-0">Reservados</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card stats-card">
+                        <div class="card-body text-center">
+                            <i class="fas fa-times-circle fs-1"></i>
+                            <h4 class="fw-bold mt-2" id="imoveisVendidos">0</h4>
+                            <p class="mb-0">Vendidos</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controles -->
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="fas fa-cogs"></i> Gestão de Imóveis</h5>
+                    <button class="btn btn-light btn-sm" onclick="openAddModal()">
+                        <i class="fas fa-plus-circle"></i> Adicionar Imóvel
+                    </button>
+                </div>
+                <div class="card-body">
+                    <!-- Filtros -->
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" id="searchInput" placeholder="Buscar por título ou localização..." onkeyup="filterImoveis()">
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-select" id="statusFilter" onchange="filterImoveis()">
+                                <option value="">Todos os Status</option>
+                                <option value="disponivel">Disponível</option>
+                                <option value="reservado">Reservado</option>
+                                <option value="vendido">Vendido</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-select" id="tipoFilter" onchange="filterImoveis()">
+                                <option value="">Todos os Tipos</option>
+                                <option value="casa">Casa</option>
+                                <option value="apartamento">Apartamento</option>
+                                <option value="terreno">Terreno</option>
+                                <option value="comercial">Comercial</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-outline-secondary w-100" onclick="clearFilters()">
+                                <i class="fas fa-sync-alt"></i> Limpar
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Tabela de Imóveis -->
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Foto</th>
+                                    <th>Título</th>
+                                    <th>Tipo</th>
+                                    <th>Localização</th>
+                                    <th>Preço</th>
+                                    <th>Status</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="imoveisTableBody">
+                                <tr>
+                                    <td colspan="7" class="text-center text-muted py-4">
+                                        <i class="fas fa-home fs-1"></i>
+                                        <p class="mt-2">Nenhum imóvel cadastrado ainda</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal Adicionar/Editar Imóvel -->
+    <div class="modal fade" id="imovelModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Adicionar Imóvel</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="imovelForm">
+                        <input type="hidden" id="imovelId">
+                        
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="mb-3">
+                                    <label for="titulo" class="form-label">Título do Imóvel *</label>
+                                    <input type="text" class="form-control" id="titulo" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="tipo" class="form-label">Tipo *</label>
+                                    <select class="form-select" id="tipo" required>
+                                        <option value="">Selecione...</option>
+                                        <option value="casa">Casa</option>
+                                        <option value="apartamento">Apartamento</option>
+                                        <option value="terreno">Terreno</option>
+                                        <option value="comercial">Comercial</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="preco" class="form-label">Preço (R$) *</label>
+                                    <input type="number" class="form-control" id="preco" step="0.01" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="status" class="form-label">Status *</label>
+                                    <select class="form-select" id="status" required>
+                                        <option value="disponivel">Disponível</option>
+                                        <option value="reservado">Reservado</option>
+                                        <option value="vendido">Vendido</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="localizacao" class="form-label">Localização *</label>
+                            <input type="text" class="form-control" id="localizacao" placeholder="Ex: Centro, São Paulo - SP" required>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="quartos" class="form-label">Quartos</label>
+                                    <input type="number" class="form-control" id="quartos" min="0">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="banheiros" class="form-label">Banheiros</label>
+                                    <input type="number" class="form-control" id="banheiros" min="0">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="area" class="form-label">Área (m²)</label>
+                                    <input type="number" class="form-control" id="area" step="0.01">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="descricao" class="form-label">Descrição</label>
+                            <textarea class="form-control" id="descricao" rows="3" placeholder="Descreva as características do imóvel..."></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="imagens" class="form-label">Imagens</label>
+                            <input type="file" class="form-control" id="imagens" multiple accept="image/*" onchange="previewImages()">
+                            <div class="mt-2" id="imagePreview"></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="saveImovel()">Salvar Imóvel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2025 Rassete Imóveis. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="../styles/bootstrap-5.3.3-dist/js/bootstrap.min.js"></script>
+    <script src="../scripts/script.js"></script>
+    <script src="../scripts/sell.js"></script>
+
+    <script>
+        let imoveis = [];
+        let currentEditingId = null;
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', function() {
+            loadImoveis();
+            updateStats();
+        });
+
+        // Carregar imóveis do localStorage
+        function loadImoveis() {
+            const savedImoveis = localStorage.getItem('ressete_imoveis');
+            if (savedImoveis) {
+                imoveis = JSON.parse(savedImoveis);
+            }
+            renderImoveis();
+            updateStats();
+        }
+
+        // Salvar imóveis no localStorage
+        function saveToStorage() {
+            localStorage.setItem('ressete_imoveis', JSON.stringify(imoveis));
+        }
+
+        // Renderizar tabela de imóveis
+        function renderImoveis(filteredImoveis = null) {
+            const tbody = document.getElementById('imoveisTableBody');
+            const imoveisToRender = filteredImoveis || imoveis;
+
+            if (imoveisToRender.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="text-center text-muted py-4">
+                            <i class="fas fa-home fs-1"></i>
+                            <p class="mt-2">Nenhum imóvel encontrado</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = imoveisToRender.map(imovel => `
+                <tr>
+                    <td>
+                        ${imovel.imagens && imovel.imagens.length > 0 
+                            ? `<img src="${imovel.imagens[0]}" alt="${imovel.titulo}">` 
+                            : '<div class="bg-light d-flex align-items-center justify-content-center" style="width:60px;height:60px;border-radius:8px"><i class="fas fa-image text-muted"></i></div>'
+                        }
+                    </td>
+                    <td>
+                        <strong>${imovel.titulo}</strong>
+                        ${imovel.quartos ? `<br><small class="text-muted">${imovel.quartos} quartos, ${imovel.banheiros} banheiros</small>` : ''}
+                    </td>
+                    <td><span class="badge bg-secondary">${capitalize(imovel.tipo)}</span></td>
+                    <td>${imovel.localizacao}</td>
+                    <td><strong>R$ ${formatPrice(imovel.preco)}</strong></td>
+                    <td><span class="badge status-badge ${getStatusClass(imovel.status)}">${capitalize(imovel.status)}</span></td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary me-1" onclick="editImovel('${imovel.id}')" title="Editar">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger" onclick="deleteImovel('${imovel.id}')" title="Excluir">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Atualizar estatísticas
+        function updateStats() {
+            document.getElementById('totalImoveis').textContent = imoveis.length;
+            document.getElementById('imoveisDisponiveis').textContent = imoveis.filter(i => i.status === 'disponivel').length;
+            document.getElementById('imoveisReservados').textContent = imoveis.filter(i => i.status === 'reservado').length;
+            document.getElementById('imoveisVendidos').textContent = imoveis.filter(i => i.status === 'vendido').length;
+        }
+
+        // Abrir modal para adicionar
+        function openAddModal() {
+            currentEditingId = null;
+            document.getElementById('modalTitle').textContent = 'Adicionar Imóvel';
+            document.getElementById('imovelForm').reset();
+            document.getElementById('imagePreview').innerHTML = '';
+            new bootstrap.Modal(document.getElementById('imovelModal')).show();
+        }
+
+        // Editar imóvel
+        function editImovel(id) {
+            const imovel = imoveis.find(i => i.id === id);
+            if (!imovel) return;
+
+            currentEditingId = id;
+            document.getElementById('modalTitle').textContent = 'Editar Imóvel';
+            
+            document.getElementById('imovelId').value = imovel.id;
+            document.getElementById('titulo').value = imovel.titulo;
+            document.getElementById('tipo').value = imovel.tipo;
+            document.getElementById('preco').value = imovel.preco;
+            document.getElementById('status').value = imovel.status;
+            document.getElementById('localizacao').value = imovel.localizacao;
+            document.getElementById('quartos').value = imovel.quartos || '';
+            document.getElementById('banheiros').value = imovel.banheiros || '';
+            document.getElementById('area').value = imovel.area || '';
+            document.getElementById('descricao').value = imovel.descricao || '';
+
+            // Preview das imagens existentes
+            const preview = document.getElementById('imagePreview');
+            if (imovel.imagens && imovel.imagens.length > 0) {
+                preview.innerHTML = imovel.imagens.map(img => 
+                    `<img src="${img}" class="image-preview" alt="Preview">`
+                ).join('');
+            }
+
+            new bootstrap.Modal(document.getElementById('imovelModal')).show();
+        }
+
+        // Salvar imóvel
+        function saveImovel() {
+            const form = document.getElementById('imovelForm');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            const imovelData = {
+                id: currentEditingId || generateId(),
+                titulo: document.getElementById('titulo').value,
+                tipo: document.getElementById('tipo').value,
+                preco: parseFloat(document.getElementById('preco').value),
+                status: document.getElementById('status').value,
+                localizacao: document.getElementById('localizacao').value,
+                quartos: parseInt(document.getElementById('quartos').value) || 0,
+                banheiros: parseInt(document.getElementById('banheiros').value) || 0,
+                area: parseFloat(document.getElementById('area').value) || 0,
+                descricao: document.getElementById('descricao').value,
+                imagens: [], // Por enquanto vazio, será implementado depois
+                createdAt: currentEditingId ? imoveis.find(i => i.id === currentEditingId).createdAt : new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            };
+
+            if (currentEditingId) {
+                const index = imoveis.findIndex(i => i.id === currentEditingId);
+                imoveis[index] = imovelData;
+            } else {
+                imoveis.push(imovelData);
+            }
+
+            saveToStorage();
+            renderImoveis();
+            updateStats();
+            
+            bootstrap.Modal.getInstance(document.getElementById('imovelModal')).hide();
+        }
+
+        // Excluir imóvel
+        function deleteImovel(id) {
+            if (confirm('Tem certeza que deseja excluir este imóvel?')) {
+                imoveis = imoveis.filter(i => i.id !== id);
+                saveToStorage();
+                renderImoveis();
+                updateStats();
+            }
+        }
+
+        // Filtrar imóveis
+        function filterImoveis() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const statusFilter = document.getElementById('statusFilter').value;
+            const tipoFilter = document.getElementById('tipoFilter').value;
+
+            let filtered = imoveis.filter(imovel => {
+                const matchSearch = imovel.titulo.toLowerCase().includes(search) || 
+                                   imovel.localizacao.toLowerCase().includes(search);
+                const matchStatus = !statusFilter || imovel.status === statusFilter;
+                const matchTipo = !tipoFilter || imovel.tipo === tipoFilter;
+                
+                return matchSearch && matchStatus && matchTipo;
+            });
+
+            renderImoveis(filtered);
+        }
+
+        // Limpar filtros
+        function clearFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('statusFilter').value = '';
+            document.getElementById('tipoFilter').value = '';
+            renderImoveis();
+        }
+
+        // Preview de imagens
+        function previewImages() {
+            const input = document.getElementById('imagens');
+            const preview = document.getElementById('imagePreview');
+            preview.innerHTML = '';
+
+            if (input.files) {
+                Array.from(input.files).forEach(file => {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.className = 'image-preview';
+                        preview.appendChild(img);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
+        }
+
+        // Logout
+        function logout() {
+            if (confirm('Deseja realmente sair do painel administrativo?')) {
+                window.location.href = 'login.html';
+            }
+        }
+
+        // Funções auxiliares
+        function generateId() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2);
+        }
+
+        function capitalize(str) {
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+
+        function formatPrice(price) {
+            return new Intl.NumberFormat('pt-BR').format(price);
+        }
+
+        function getStatusClass(status) {
+            switch(status) {
+                case 'disponivel': return 'bg-success';
+                case 'reservado': return 'bg-warning';
+                case 'vendido': return 'bg-danger';
+                default: return 'bg-secondary';
+            }
+        }
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="styles/bootstrap-5.3.3-dist/js/bootstrap.min.js"></script>
+    <script src="scripts/script.js"></script>
+
+</body>
+</html>
