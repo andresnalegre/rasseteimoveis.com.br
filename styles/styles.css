@@ -808,24 +808,6 @@ body {
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-.search-title .highlight {
-  position: relative;
-  color: #00a86b;
-  font-weight: 800;
-}
-
-.search-title .highlight::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 110%;
-  height: 3px;
-  background: linear-gradient(90deg, #00a86b, #00c878, #4ade80);
-  border-radius: 1.5px;
-}
-
 .search-subtitle {
   font-size: 1.1rem;
   color: #64748b;
