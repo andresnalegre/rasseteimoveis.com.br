@@ -569,6 +569,10 @@ body {
   letter-spacing: -0.02em;
 }
 
+.green {
+  color: green;
+}
+
 .hero-subtitle {
   font-size: 1.4rem;
   font-weight: 400;

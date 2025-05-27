@@ -347,9 +347,10 @@ function submitContactForm(event) {
 }
 
 // Hero
-
-document.addEventListener("DOMContentLoaded", function () {
-    const swiper = new Swiper('.swiper', {
+const HeroModule = {
+    swiper: null,
+    swiperElement: null,
+    config: {
         loop: true,
         effect: 'fade',
         fadeEffect: {
@@ -368,20 +369,112 @@ document.addEventListener("DOMContentLoaded", function () {
         navigation: {
             nextEl: '.swiper-button-next',
             prevEl: '.swiper-button-prev',
-        },
-        on: {
-            init: function() {
-                const swiperEl = this.el;
-                swiperEl.addEventListener('mouseenter', () => {
-                    this.autoplay.stop();
-                });
-                swiperEl.addEventListener('mouseleave', () => {
-                    this.autoplay.start();
-                });
-            }
         }
-    });
-});
+    },
+
+    init() {
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => this.setup());
+        } else {
+            this.setup();
+        }
+    },
+
+    setup() {
+        this.swiperElement = document.querySelector('.swiper');
+        
+        if (!this.swiperElement) {
+            console.warn('HeroModule: Elemento .swiper não encontrado');
+            return;
+        }
+
+        if (typeof Swiper === 'undefined') {
+            console.error('HeroModule: Swiper library não encontrada');
+            return;
+        }
+
+        this.createSwiper();
+        this.bindHoverEvents();
+    },
+
+    createSwiper() {
+        this.swiper = new Swiper(this.swiperElement, this.config);
+    },
+
+    bindHoverEvents() {
+        if (!this.swiperElement || !this.swiper) return;
+
+        this.swiperElement.addEventListener('mouseenter', () => {
+            this.pauseAutoplay();
+        });
+
+        this.swiperElement.addEventListener('mouseleave', () => {
+            this.resumeAutoplay();
+        });
+    },
+
+    pauseAutoplay() {
+        if (this.swiper && this.swiper.autoplay) {
+            this.swiper.autoplay.stop();
+        }
+    },
+
+    resumeAutoplay() {
+        if (this.swiper && this.swiper.autoplay) {
+            this.swiper.autoplay.start();
+        }
+    },
+
+    goToSlide(index) {
+        if (this.swiper) {
+            this.swiper.slideTo(index);
+        }
+    },
+
+    nextSlide() {
+        if (this.swiper) {
+            this.swiper.slideNext();
+        }
+    },
+
+    prevSlide() {
+        if (this.swiper) {
+            this.swiper.slidePrev();
+        }
+    },
+
+    updateConfig(newConfig) {
+        this.config = { ...this.config, ...newConfig };
+        this.restart();
+    },
+
+    restart() {
+        this.destroy();
+        this.setup();
+    },
+
+    destroy() {
+        if (this.swiper) {
+            this.swiper.destroy(true, true);
+            this.swiper = null;
+        }
+        
+        if (this.swiperElement) {
+            this.swiperElement.removeEventListener('mouseenter', this.pauseAutoplay);
+            this.swiperElement.removeEventListener('mouseleave', this.resumeAutoplay);
+        }
+    },
+
+    api: {
+        pause: () => HeroModule.pauseAutoplay(),
+        resume: () => HeroModule.resumeAutoplay(),
+        next: () => HeroModule.nextSlide(),
+        prev: () => HeroModule.prevSlide(),
+        goTo: (index) => HeroModule.goToSlide(index),
+        restart: () => HeroModule.restart(),
+        updateConfig: (config) => HeroModule.updateConfig(config)
+    }
+};
 
 // Search
 document.addEventListener('DOMContentLoaded', function() {
@@ -787,3 +880,4 @@ function addSocialLink(platform, url, iconClass) {
 // Initialize the Green Banner Module
 GreenBannerModule.init();
 NavbarModule.init();
+HeroModule.init();
