@@ -1835,6 +1835,7 @@ select.form-control:focus {
 
 .financing-modal-close {
   position: absolute;
+  padding-bottom: 4px;
   right: 20px;
   top: 50%;
   transform: translateY(-50%);
