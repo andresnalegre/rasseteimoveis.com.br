@@ -489,6 +489,242 @@ body {
   }
 }
 
+/* Favorites */
+
+/* Favorites Modal */
+.favorites-modal {
+  max-width: 800px;
+  width: 95%;
+}
+
+.favorites-list {
+  max-height: 60vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.favorite-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  background: white;
+  position: relative;
+}
+
+.favorite-item:hover {
+  border-color: #004d40;
+  box-shadow: 0 4px 12px rgba(0, 77, 64, 0.1);
+  /* Removido o transform que causava o problema da borda */
+}
+
+.favorite-image {
+  flex-shrink: 0;
+  width: 100px;
+  height: 80px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #f3f4f6;
+}
+
+.favorite-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.favorite-item:hover .favorite-image img {
+  transform: scale(1.05);
+}
+
+.favorite-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-right: 50px; /* Espaço para o botão de deletar */
+}
+
+.favorite-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.favorite-location {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.favorite-location::before {
+  content: "📍";
+  font-size: 0.8rem;
+}
+
+.favorite-price {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #004d40;
+  margin: 4px 0 0 0;
+}
+
+.remove-favorite {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: #fee2e2;
+  color: #dc2626;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+.remove-favorite:hover {
+  background: #fecaca;
+  opacity: 1;
+  transform: scale(1.1);
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3);
+}
+
+.remove-favorite:active {
+  transform: scale(0.95);
+}
+
+/* Ícone X customizado */
+.remove-favorite::before {
+  content: "×";
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.empty-favorites {
+  text-align: center;
+  padding: 40px 20px;
+  color: #6b7280;
+}
+
+.empty-favorites h3 {
+  color: #374151;
+  margin-bottom: 8px;
+  font-size: 1.3rem;
+}
+
+.empty-favorites p {
+  margin: 0;
+  font-size: 1rem;
+}
+
+/* Scrollbar personalizado para lista de favoritos */
+.favorites-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.favorites-list::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 3px;
+}
+
+.favorites-list::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.favorites-list::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Responsivo para modal de favoritos */
+@media (max-width: 768px) {
+  .favorites-modal {
+      width: calc(100% - 20px);
+      margin: 10px;
+  }
+  
+  .favorite-item {
+      flex-direction: column;
+      text-align: center;
+      gap: 12px;
+      padding: 16px 16px 50px 16px; /* Mais espaço embaixo para o botão */
+  }
+  
+  .favorite-image {
+      width: 120px;
+      height: 90px;
+  }
+  
+  .favorite-content {
+      text-align: center;
+      padding-right: 0;
+  }
+  
+  .remove-favorite {
+      bottom: 16px;
+      top: auto;
+      right: 50%;
+      transform: translateX(50%);
+  }
+  
+  .remove-favorite:hover {
+      transform: translateX(50%) scale(1.1);
+  }
+  
+  .remove-favorite:active {
+      transform: translateX(50%) scale(0.95);
+  }
+}
+
+@media (max-width: 480px) {
+  .favorites-list {
+      max-height: 50vh;
+      gap: 12px;
+  }
+  
+  .favorite-item {
+      padding: 12px 12px 40px 12px;
+  }
+  
+  .favorite-image {
+      width: 100px;
+      height: 75px;
+  }
+  
+  .favorite-title {
+      font-size: 1rem;
+  }
+  
+  .favorite-location,
+  .favorite-price {
+      font-size: 0.9rem;
+  }
+  
+  .remove-favorite {
+      width: 28px;
+      height: 28px;
+      bottom: 12px;
+  }
+}
+
 /*** Main ***/
 
 /* Hero */
@@ -1341,7 +1577,8 @@ select.form-control:focus {
 }
 
 .price-sale {
-  font-size: 1.5rem;
+  font-size: 1.1rem;
+  justify-self: center;
   font-weight: 800;
   color: #059669;
   margin-bottom: 4px;
@@ -1349,6 +1586,7 @@ select.form-control:focus {
 }
 
 .price-rent {
+  justify-self: center;
   font-size: 1.1rem;
   font-weight: 700;
   color: #004d40;
@@ -1676,22 +1914,12 @@ select.form-control:focus {
   text-align: center;
   margin-top: 60px;
   padding: 40px 32px;
+  margin: 0px 70px 0px 70px;
   background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
   border-radius: 20px;
   border: 1px solid #e2e8f0;
   position: relative;
   overflow: hidden;
-}
-
-.financing-cta::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(0, 77, 64, 0.05) 0%, transparent 70%);
-  animation: pulse 4s ease-in-out infinite;
 }
 
 .financing-cta > * {
@@ -2159,7 +2387,7 @@ select.form-control:focus {
   display: block;
   max-width: 1000px;
   margin: 0 auto;
-  background: white;
+  background: rgba(255, 255, 255, 0.85); /* fundo branco semi-transparente */
   border: 1px solid #e2e8f0;
   border-radius: 24px;
   padding: 64px 48px;
@@ -2167,6 +2395,7 @@ select.form-control:focus {
   transition: all 0.2s ease;
   position: relative;
   box-shadow: 0 8px 32px rgba(0, 77, 64, 0.08);
+  overflow: hidden;
 }
 
 .cta-minimal:hover {
@@ -2174,6 +2403,24 @@ select.form-control:focus {
   box-shadow: 0 24px 48px rgba(0, 77, 64, 0.15);
   border-color: #004d40;
   text-decoration: none;
+}
+
+.bg-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('../styles/assets/13.png');
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+  opacity: 0.3;
+}
+
+.cta-minimal > *:not(.bg-image) {
+  position: relative;
+  z-index: 1;
 }
 
 .minimal-content {
@@ -2198,7 +2445,7 @@ select.form-control:focus {
 
 .minimal-subtitle {
   font-size: 1.25rem;
-  color: #64748b;
+  color: #004d40;
   font-weight: 500;
   margin-bottom: 36px;
   line-height: 1.5;
@@ -2268,48 +2515,50 @@ select.form-control:focus {
 /* Media Queries */
 @media (max-width: 768px) {
   .cta-section {
-      padding: 60px 0;
+    padding: 60px 0;
   }
 
   .minimal-title {
-      font-size: 2rem;
+    font-size: 2rem;
   }
 
   .minimal-subtitle {
-      font-size: 1.125rem;
+    font-size: 1.125rem;
   }
 
   .cta-minimal {
-      padding: 48px 32px;
-      border-radius: 20px;
+    padding: 48px 32px;
+    border-radius: 20px;
   }
 
   .minimal-arrow {
-      width: 56px;
-      height: 56px;
-      font-size: 1.25rem;
+    width: 56px;
+    height: 56px;
+    font-size: 1.25rem;
   }
 }
 
 @media (max-width: 480px) {
   .minimal-title {
-      font-size: 1.75rem;
+    font-size: 1.75rem;
   }
 
   .minimal-subtitle {
-      font-size: 1rem;
+    font-size: 1rem;
   }
 
   .cta-minimal {
-      padding: 36px 24px;
+    padding: 36px 24px;
   }
 
   .minimal-arrow {
-      width: 52px;
-      height: 52px;
-      font-size: 1.125rem;
+    width: 52px;
+    height: 52px;
+    font-size: 1.125rem;
   }
 }
+
+
 
 /* Footer */
 .content {

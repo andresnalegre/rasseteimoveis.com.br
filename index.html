@@ -56,7 +56,11 @@
                         <li class="menu-item d-lg-none"><a class="menu-link" href="#">Venda</a></li>
                         <li class="menu-item d-lg-none"><a class="menu-link" href="#">Locação</a></li>
                         <li class="menu-item"><a class="menu-link" onclick="openContactModal()" style="cursor: pointer;">Fale Conosco</a></li>
-                        <li class="menu-item"><a class="menu-link" href="./pages/favorites.html"><i class="lni-star-filled"></i> Favoritos</a></li>
+                        <li class="menu-item">
+                            <a class="menu-link" onclick="openFavoritesModal()" style="cursor: pointer;">
+                                <i class="lni-star-filled"></i> Favoritos
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -112,6 +116,20 @@
                             
                             <button type="submit" class="submit-btn">Enviar Mensagem</button>
                         </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Favorites Modal -->
+            <div id="favoritosModal" class="modal">
+                <div class="modal-content favorites-modal">
+                    <div class="modal-header">
+                        <h2 class="modal-title">Meus Favoritos</h2>
+                        <span class="close" onclick="closeFavoritesModal()">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <div class="favorites-list">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -912,13 +930,10 @@
         <!-- Advert -->
         <section class="cta-section loading">
             <div class="particles"></div>
-            
             <div class="ad-container">
                 <a href="https://www.rasseteimoveis.com.br/anuncie-seu-imovel" class="cta-minimal">
-                    <div class="stats">
-                        <span class="counter" data-target="1247">0</span> imóveis anunciados
-                    </div>
-                    
+                    <div class="bg-image"></div> <!-- Agora dentro da cta-minimal -->
+
                     <div class="minimal-content">
                         <div class="minimal-text">
                             <h2 class="minimal-title">Tem um imóvel para anunciar?</h2>
@@ -927,8 +942,9 @@
                         </div>
                     </div>
                 </a>
-            </div>
+            </div>            
         </section>
+
     </main>
 
     <!-- Footer -->

@@ -128,7 +128,8 @@ const NavbarModule = {
     dropdownMenus: null,
     modals: {
         quemSomos: null,
-        faleConosco: null
+        faleConosco: null,
+        favoritos: null
     },
     forms: {
         contact: null
@@ -155,6 +156,7 @@ const NavbarModule = {
         this.dropdownMenus = document.querySelectorAll('.dropdown-menu');
         this.modals.quemSomos = document.getElementById('quemSomosModal');
         this.modals.faleConosco = document.getElementById('faleConoscoModal');
+        this.modals.favoritos = document.getElementById('favoritosModal');
         this.forms.contact = document.querySelector('.contact-form');
 
         if (!this.menuButton || !this.navbarMenu) {
@@ -268,6 +270,9 @@ const NavbarModule = {
         if (event.target === this.modals.faleConosco) {
             this.closeModal('faleConosco');
         }
+        if (event.target === this.modals.favoritos) {
+            this.closeModal('favoritos');
+        }
     },
 
     handleContactForm(event) {
@@ -287,6 +292,156 @@ const NavbarModule = {
         this.closeModal('faleConosco');
     },
 
+    openFavoritesModal() {
+        this.updateFavoritesContent();
+        this.openModal('favoritos');
+    },
+
+    updateFavoritesContent() {
+        const favoritesContainer = document.querySelector('#favoritosModal .favorites-list');
+        if (!favoritesContainer) {
+            console.warn('NavbarModule: Container .favorites-list não encontrado');
+            return;
+        }
+
+        if (typeof CatalogModule !== 'undefined') {
+            const favorites = CatalogModule.api.getFavorites();
+            console.log('Favoritos encontrados:', favorites);
+            this.renderFavorites(favoritesContainer, favorites);
+        } else {
+            console.warn('NavbarModule: CatalogModule não disponível');
+            this.renderEmptyFavorites(favoritesContainer);
+        }
+    },
+
+    renderFavorites(container, favoriteIds) {
+        if (favoriteIds.length === 0) {
+            console.log('Nenhum favorito para renderizar');
+            this.renderEmptyFavorites(container);
+            return;
+        }
+
+        console.log('Renderizando favoritos:', favoriteIds);
+
+        const favoritesHtml = favoriteIds.map(id => {
+            const propertyData = this.getPropertyData(id);
+            console.log(`Dados do imóvel ${id}:`, propertyData);
+            return this.createFavoriteItemHtml(propertyData);
+        }).join('');
+
+        container.innerHTML = favoritesHtml;
+    },
+
+    renderEmptyFavorites(container) {
+        container.innerHTML = `
+            <div class="empty-favorites">
+                <i class="lni-star" style="font-size: 3rem; color: #ddd; margin-bottom: 1rem;"></i>
+                <h3>Nenhum favorito ainda</h3>
+                <p>Adicione imóveis aos seus favoritos para vê-los aqui!</p>
+            </div>
+        `;
+    },
+
+    getPropertyData(propertyId) {
+        const propertyButton = document.querySelector(`[data-property-id="${propertyId}"]`);
+        if (!propertyButton) {
+            console.warn(`Botão com ID ${propertyId} não encontrado`);
+            return { id: propertyId, title: 'Imóvel não encontrado', image: '', price: '', location: '' };
+        }
+
+        const propertyCard = propertyButton.closest('.property-card');
+        if (!propertyCard) {
+            console.warn(`Card do imóvel ${propertyId} não encontrado`);
+            return { id: propertyId, title: 'Card não encontrado', image: '', price: '', location: '' };
+        }
+
+        console.log(`Analisando card do imóvel ${propertyId}`);
+        
+        const allText = propertyCard.textContent.trim();
+        console.log('Texto completo do card:', allText);
+
+        let title = '';
+        let image = '';
+        let price = '';
+        let location = '';
+
+        const titleElements = propertyCard.querySelectorAll('h1, h2, h3, h4, h5, h6, .title, .nome, .descricao, [class*="title"]');
+        for (const el of titleElements) {
+            const text = el.textContent.trim();
+            if (text && text.length > 5 && !text.includes('R$') && !text.includes('m²')) {
+                title = text;
+                break;
+            }
+        }
+
+        if (!title) {
+            const lines = allText.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+            for (const line of lines) {
+                if (!line.includes('R$') && 
+                    !line.includes('m²') && 
+                    !line.includes('Cód.') &&
+                    !line.includes(' - ') &&
+                    line.length > 10) {
+                    title = line;
+                    break;
+                }
+            }
+        }
+
+        const imgEl = propertyCard.querySelector('img');
+        if (imgEl && imgEl.src && !imgEl.src.includes('data:')) {
+            image = imgEl.src;
+        }
+
+        const priceMatch = allText.match(/R\$\s*[\d,.]+(?:,\d{2})?/);
+        if (priceMatch) {
+            price = priceMatch[0];
+        }
+
+        const locationMatch = allText.match(/([A-Za-zÀ-ÿ\s]+)\s*-\s*([A-Za-zÀ-ÿ\s\/]+)/);
+        if (locationMatch) {
+            location = locationMatch[0];
+        }
+
+        if (!title) {
+            const codeMatch = allText.match(/C[óo]d\.?\s*(\d+)/);
+            title = codeMatch ? `Imóvel Código ${codeMatch[1]}` : `Imóvel ${propertyId}`;
+        }
+
+        const result = { id: propertyId, title, image, price, location };
+        console.log(`Dados capturados para ${propertyId}:`, result);
+        
+        return result;
+    },
+
+    createFavoriteItemHtml(property) {
+        const placeholderImage = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDMwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0xMjUgNzVIMTc1VjEyNUgxMjVWNzVaIiBmaWxsPSIjRTVFN0VCIi8+CjxwYXRoIGQ9Ik0xNDEuNjY3IDk1SDE1OC4zMzNWMTA1SDE0MS42NjdWOTVaIiBmaWxsPSIjOUNBM0FGIi8+Cjwvc3ZnPgo=';
+        
+        return `
+            <div class="favorite-item" data-property-id="${property.id}">
+                <div class="favorite-image">
+                    <img src="${property.image || placeholderImage}" alt="${property.title}" onerror="this.src='${placeholderImage}'">
+                </div>
+                <div class="favorite-content">
+                    <h4 class="favorite-title">${property.title}</h4>
+                    <p class="favorite-location">${property.location || 'Localização não informada'}</p>
+                    <p class="favorite-price">${property.price || 'Preço sob consulta'}</p>
+                </div>
+                <button class="remove-favorite" onclick="NavbarModule.removeFavorite('${property.id}')" title="Remover dos favoritos"></button>
+            </div>
+        `;
+    },
+
+    removeFavorite(propertyId) {
+        if (typeof CatalogModule !== 'undefined') {
+            const favoriteButton = document.querySelector(`[data-property-id="${propertyId}"].favorite-btn`);
+            if (favoriteButton && favoriteButton.classList.contains('active')) {
+                favoriteButton.click();
+            }
+        }
+        this.updateFavoritesContent();
+    },
+
     submitContactData(data) {
         const message = `Mensagem enviada com sucesso!\n\nNome: ${data.nome}\nEmail: ${data.email}\nTelefone: ${data.telefone}\nWhatsApp: ${data.whatsapp}\nMensagem: ${data.mensagem}`;
         alert(message);
@@ -301,6 +456,9 @@ const NavbarModule = {
         closeQuemSomosModal: () => NavbarModule.closeModal('quemSomos'),
         openFaleConoscoModal: () => NavbarModule.openModal('faleConosco'),
         closeFaleConoscoModal: () => NavbarModule.closeModal('faleConosco'),
+        openFavoritosModal: () => NavbarModule.openFavoritesModal(),
+        closeFavoritosModal: () => NavbarModule.closeModal('favoritos'),
+        updateFavorites: () => NavbarModule.updateFavoritesContent(),
         toggleMenu: () => NavbarModule.toggleMenu(),
         closeAllDropdowns: () => NavbarModule.closeAllDropdowns()
     },
@@ -340,6 +498,14 @@ function openContactModal() {
 
 function closeContactModal() {
     NavbarModule.api.closeFaleConoscoModal();
+}
+
+function openFavoritesModal() {
+    NavbarModule.api.openFavoritosModal();
+}
+
+function closeFavoritesModal() {
+    NavbarModule.api.closeFavoritosModal();
 }
 
 function submitContactForm(event) {
@@ -659,6 +825,26 @@ const CatalogModule = {
         this.cacheElements();
         this.bindEvents();
         this.setInitialState();
+        
+        // Carregar favoritos do localStorage após um delay
+        setTimeout(() => {
+            this.loadStoredFavorites();
+        }, 500);
+    },
+
+    loadStoredFavorites() {
+        if (typeof NavbarModule !== 'undefined' && NavbarModule.getFavoritesFromStorage) {
+            const storedFavorites = NavbarModule.getFavoritesFromStorage();
+            console.log(`CatalogModule: Carregando ${storedFavorites.length} favoritos salvos`);
+            
+            storedFavorites.forEach(favorite => {
+                const button = document.querySelector(`[data-property-id="${favorite.id}"]`);
+                if (button && !button.classList.contains('active')) {
+                    button.classList.add('active');
+                    console.log(`Favorito ${favorite.id} restaurado`);
+                }
+            });
+        }
     },
 
     cacheElements() {
@@ -677,6 +863,7 @@ const CatalogModule = {
 
     bindEvents() {
         this.bindTabEvents();
+        this.ensurePropertyIds();
         this.bindFavoriteEvents();
     },
 
@@ -688,7 +875,40 @@ const CatalogModule = {
 
     bindFavoriteEvents() {
         this.favoriteButtons.forEach(button => {
-            button.addEventListener('click', (event) => this.handleFavoriteClick(event, button));
+            // Remover listeners antigos se existirem
+            const newButton = button.cloneNode(true);
+            button.parentNode.replaceChild(newButton, button);
+            
+            newButton.addEventListener('click', (event) => this.handleFavoriteClick(event, newButton));
+        });
+        
+        // Atualizar referência para os novos botões
+        this.favoriteButtons = document.querySelectorAll('.favorite-btn');
+    },
+
+    ensurePropertyIds() {
+        this.favoriteButtons.forEach((button, index) => {
+            if (!button.getAttribute('data-property-id')) {
+                const propertyCard = button.closest('.property-card');
+                if (propertyCard) {
+                    // Tentar pegar do código visível
+                    const codeElement = propertyCard.querySelector('[class*="cod"], [class*="code"]');
+                    if (codeElement) {
+                        const codeText = codeElement.textContent.trim();
+                        const codeMatch = codeText.match(/\d+/);
+                        if (codeMatch) {
+                            button.setAttribute('data-property-id', codeMatch[0]);
+                            console.log(`ID ${codeMatch[0]} adicionado ao botão ${index + 1}`);
+                        }
+                    }
+                }
+                
+                // Fallback: usar índice
+                if (!button.getAttribute('data-property-id')) {
+                    button.setAttribute('data-property-id', `property-${index + 1}`);
+                    console.log(`ID fallback property-${index + 1} adicionado`);
+                }
+            }
         });
     },
 
@@ -767,21 +987,40 @@ const CatalogModule = {
 
     handleFavoriteClick(event, button) {
         event.stopPropagation();
+        event.preventDefault();
         this.toggleFavorite(button);
     },
 
     toggleFavorite(button) {
-        const wasActive = button.classList.contains('active');
-        button.classList.toggle('active');
-        
         const propertyId = button.getAttribute('data-property-id');
-        if (propertyId) {
-            this.handleFavoriteChange(propertyId, !wasActive);
+        if (!propertyId) {
+            console.warn('Botão sem data-property-id');
+            return;
+        }
+
+        const wasActive = button.classList.contains('active');
+        
+        if (wasActive) {
+            // Remover favorito
+            button.classList.remove('active');
+            this.handleFavoriteChange(propertyId, false);
+            console.log(`❤️ Favorito ${propertyId} removido`);
+        } else {
+            // Adicionar favorito
+            button.classList.add('active');
+            this.handleFavoriteChange(propertyId, true);
+            console.log(`❤️ Favorito ${propertyId} adicionado`);
         }
     },
 
     handleFavoriteChange(propertyId, isFavorite) {
-        console.log(`Property ${propertyId} ${isFavorite ? 'added to' : 'removed from'} favorites`);
+        if (typeof NavbarModule !== 'undefined' && NavbarModule.api) {
+            if (isFavorite) {
+                NavbarModule.api.addToFavorites(propertyId);
+            } else {
+                NavbarModule.api.removeFromFavorites(propertyId);
+            }
+        }
     },
 
     getActiveTab() {
@@ -790,14 +1029,15 @@ const CatalogModule = {
 
     getFavorites() {
         const favorites = [];
-        this.favoriteButtons.forEach(button => {
-            if (button.classList.contains('active')) {
-                const propertyId = button.getAttribute('data-property-id');
-                if (propertyId) {
-                    favorites.push(propertyId);
-                }
+        const activeButtons = document.querySelectorAll('.favorite-btn.active');
+        
+        activeButtons.forEach(button => {
+            const propertyId = button.getAttribute('data-property-id');
+            if (propertyId) {
+                favorites.push(propertyId);
             }
         });
+        
         return favorites;
     },
 
@@ -818,6 +1058,7 @@ const CatalogModule = {
 
     updateFavoriteButtons() {
         this.favoriteButtons = document.querySelectorAll('.favorite-btn');
+        this.ensurePropertyIds();
         this.bindFavoriteEvents();
     },
 
@@ -1144,25 +1385,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    const indicator = document.querySelector('.indicator-content');
-    
-    if (indicator) {
-        setInterval(() => {
-            indicator.style.opacity = '0.7';
-            setTimeout(() => {
-                indicator.style.opacity = '1';
-            }, 500);
-        }, 5000);
-    }
-    
-    function smoothScroll() {
-        window.scrollTo({
-            top: document.body.scrollHeight,
-            behavior: 'smooth'
-        });
-    }
-    
-    console.log('Footer carregado com sucesso!');
 });
 
 function updateIndicator(newValue, newPercentage) {
@@ -1189,6 +1411,9 @@ function addSocialLink(platform, url, iconClass) {
         console.log('Link social adicionado:', platform);
     }
 }
+
+//fix
+
 
 // Initialize the Green Banner Module
 GreenBannerModule.init();
