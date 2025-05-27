@@ -931,20 +931,105 @@
         <section class="cta-section loading">
             <div class="particles"></div>
             <div class="ad-container">
-                <a href="https://www.rasseteimoveis.com.br/anuncie-seu-imovel" class="cta-minimal">
-                    <div class="bg-image"></div> <!-- Agora dentro da cta-minimal -->
-
+                <a href="#" class="cta-minimal" onclick="event.preventDefault(); openImovelModal();">
+                    <div class="bg-image"></div>
                     <div class="minimal-content">
                         <div class="minimal-text">
                             <h2 class="minimal-title">Tem um imóvel para anunciar?</h2>
                             <p class="minimal-subtitle">Alcance milhares de pessoas interessadas</p>
-                            <div class="minimal-arrow">→</div>
+                            <div class="minimal-arrow" role="button" aria-label="Abrir anúncio">→</div>
                         </div>
                     </div>
                 </a>
-            </div>            
+            </div>
+    
+            <!-- Modal de Cadastro de Imóvel -->
+            <div id="cadastroImovelModal" class="advert-modal" aria-hidden="true" role="dialog" aria-labelledby="advertModalTitle" aria-modal="true">
+                <div class="advert-modal-content">
+                    <div class="advert-modal-header">
+                        <h2 id="advertModalTitle" class="advert-modal-title">Cadastrar Imóvel</h2>
+                        <button type="button" class="advert-close" onclick="closeImovelModal()" aria-label="Fechar modal">&times;</button>
+                    </div>
+                    <div class="advert-modal-body">
+                        <form class="advert-form enviando" method="post" action="https://www.rasseteimoveis.com.br/anuncie-seu-imovel/enviar">
+                            <input type="hidden" name="_token" value="EWUEEKcE7hf5ya5JmG7W46KjSXB9Zf5bJiof1TfG">
+    
+                            <h3 class="advert-heading">Informações Básicas</h3>
+                            <div class="advert-form-group">
+                                <label for="finalidade">Finalidade*</label>
+                                <select id="finalidade" name="finalidade" required>
+                                    <option value="locacao">Aluguel</option>
+                                    <option value="venda">Venda</option>
+                                </select>
+                            </div>
+                            <div class="advert-form-group">
+                                <label for="tipoimovel">Tipo de Imóvel*</label>
+                                <input id="tipoimovel" type="text" name="tipoimovel" placeholder="Ex: apartamento" required>
+                            </div>
+                            <div class="advert-form-group">
+                                <label for="valor">Valor*</label>
+                                <input id="valor" type="text" name="valor" placeholder="R$" required>
+                            </div>
+                            <div class="advert-form-group">
+                                <label for="areaimovel">Área do Imóvel</label>
+                                <input id="areaimovel" type="text" name="areaimovel" placeholder="m²">
+                            </div>
+                            <div class="advert-form-group">
+                                <label for="dormitorios">Dormitórios</label>
+                                <input id="dormitorios" type="number" name="dormitorios">
+                            </div>
+                            <div class="advert-form-group">
+                                <label for="banheiros">Banheiros</label>
+                                <input id="banheiros" type="number" name="banheiros">
+                            </div>
+    
+                            <h3 class="advert-heading">Localização</h3>
+                            <div class="advert-form-group">
+                                <label for="endereco">Endereço*</label>
+                                <input id="endereco" type="text" name="endereco" required>
+                            </div>
+                            <div class="advert-form-group">
+                                <label for="bairro">Bairro*</label>
+                                <input id="bairro" type="text" name="bairro" required>
+                            </div>
+                            <div class="advert-form-group">
+                                <label for="cidade">Cidade*</label>
+                                <input id="cidade" type="text" name="cidade" required>
+                            </div>
+                            <div class="advert-form-group">
+                                <label for="cep">CEP</label>
+                                <input id="cep" type="text" name="cep" placeholder="XXXXX-XXX" maxlength="9">
+                            </div>
+    
+                            <h3 class="advert-heading">Informações Detalhadas</h3>
+                            <div class="advert-form-group">
+                                <textarea id="informacoes" name="informacoes" rows="4" placeholder="Fale mais sobre seu imóvel e propostas que possui interesse." required></textarea>
+                            </div>
+    
+                            <h3 class="advert-heading">Contato</h3>
+                            <div class="advert-form-group">
+                                <label for="nome">Nome Completo*</label>
+                                <input id="nome" type="text" name="nome" required>
+                            </div>
+                            <div class="advert-form-group">
+                                <label for="email">Email*</label>
+                                <input id="email" type="email" name="email" required>
+                            </div>
+                            <div class="advert-form-group">
+                                <label for="telefone">Telefone*</label>
+                                <input id="telefone" type="text" name="telefone" required maxlength="15">
+                            </div>
+                            <div class="advert-checkbox-group">
+                                <input type="checkbox" id="resposta" name="resposta" value="S">
+                                <label for="resposta">Desejo que o contato seja via WhatsApp</label>
+                            </div>
+    
+                            <button type="submit" class="advert-submit-btn">Enviar Cadastro</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </section>
-
     </main>
 
     <!-- Footer -->

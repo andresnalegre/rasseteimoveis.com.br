@@ -2387,7 +2387,7 @@ select.form-control:focus {
   display: block;
   max-width: 1000px;
   margin: 0 auto;
-  background: rgba(255, 255, 255, 0.85); /* fundo branco semi-transparente */
+  background: rgba(255, 255, 255, 0.85);
   border: 1px solid #e2e8f0;
   border-radius: 24px;
   padding: 64px 48px;
@@ -2512,67 +2512,296 @@ select.form-control:focus {
   color: #004d40;
 }
 
+/* Advert Modal - Aplicando estilo similar ao navbar modal */
+.advert-modal {
+  display: none;
+  position: fixed;
+  z-index: 2000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.3s ease;
+}
+
+.advert-modal.show {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.advert-modal-content {
+  background-color: white;
+  margin: 20px;
+  padding: 0;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 700px;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideInUp 0.4s ease;
+  overflow: hidden;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.advert-modal-header {
+  background: linear-gradient(135deg, #004d40 0%, #00695c 100%);
+  color: white;
+  padding: 24px 32px;
+  position: relative;
+}
+
+.advert-modal-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23dots)"/></svg>');
+  pointer-events: none;
+}
+
+.advert-modal-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.advert-modal-body {
+  padding: 32px;
+  line-height: 1.7;
+  color: #374151;
+  font-size: 1.05rem;
+}
+
+.advert-close {
+  position: absolute;
+  padding-bottom: 4px;
+  top: 20px;
+  right: 24px;
+  color: white;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 3;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+}
+
+.advert-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+/* Advert Form */
+.advert-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.advert-form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.advert-form-group label {
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.9rem;
+}
+
+.advert-form-group input,
+.advert-form-group textarea,
+.advert-form-group select {
+  padding: 10px 14px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.advert-form-group input:focus,
+.advert-form-group textarea:focus,
+.advert-form-group select:focus {
+  outline: none;
+  border-color: #004d40;
+  box-shadow: 0 0 0 3px rgba(0, 77, 64, 0.1);
+}
+
+.advert-form-group textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.advert-checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.advert-checkbox-group input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #004d40;
+}
+
+.advert-checkbox-group label {
+  margin: 0;
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.advert-submit-btn {
+  background: linear-gradient(135deg, #004d40 0%, #00695c 100%);
+  color: white;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 8px;
+}
+
+.advert-submit-btn:hover {
+  background: linear-gradient(135deg, #00695c 0%, #26a69a 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 77, 64, 0.3);
+}
+
+.advert-submit-btn:active {
+  transform: translateY(0);
+}
+
+.advert-heading {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 24px 0 16px 0;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.advert-heading:first-child {
+  margin-top: 0;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInUp {
+  from { 
+      opacity: 0;
+      transform: translateY(50px) scale(0.95);
+  }
+  to { 
+      opacity: 1;
+      transform: translateY(0) scale(1);
+  }
+}
+
 /* Media Queries */
 @media (max-width: 768px) {
   .cta-section {
-    padding: 60px 0;
+      padding: 60px 0;
   }
 
   .minimal-title {
-    font-size: 2rem;
+      font-size: 2rem;
   }
 
   .minimal-subtitle {
-    font-size: 1.125rem;
+      font-size: 1.125rem;
   }
 
   .cta-minimal {
-    padding: 48px 32px;
-    border-radius: 20px;
+      padding: 48px 32px;
+      border-radius: 20px;
   }
 
   .minimal-arrow {
-    width: 56px;
-    height: 56px;
-    font-size: 1.25rem;
+      width: 56px;
+      height: 56px;
+      font-size: 1.25rem;
+  }
+
+  .advert-modal-content {
+      margin: 10px;
+      width: calc(100% - 20px);
+  }
+
+  .advert-modal-header {
+      padding: 20px 24px;
+  }
+
+  .advert-modal-title {
+      font-size: 1.5rem;
+  }
+
+  .advert-modal-body {
+      padding: 24px;
+      font-size: 1rem;
   }
 }
 
 @media (max-width: 480px) {
   .minimal-title {
-    font-size: 1.75rem;
+      font-size: 1.75rem;
   }
 
   .minimal-subtitle {
-    font-size: 1rem;
+      font-size: 1rem;
   }
 
   .cta-minimal {
-    padding: 36px 24px;
+      padding: 36px 24px;
   }
 
   .minimal-arrow {
-    width: 52px;
-    height: 52px;
-    font-size: 1.125rem;
+      width: 52px;
+      height: 52px;
+      font-size: 1.125rem;
   }
 }
 
-
-
-/* Footer */
-.content {
-  flex-grow: 1;
-  text-align: center;
-  padding: 4rem 2rem;
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+/* Scrollbar personalizado para modal */
+.advert-modal-content::-webkit-scrollbar {
+  width: 6px;
 }
 
-.content h1 {
-  font-size: 2rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-  color: #1e293b;
+.advert-modal-content::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 3px;
+}
+
+.advert-modal-content::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.advert-modal-content::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
 }
 
 

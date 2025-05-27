@@ -1292,51 +1292,34 @@ closeFinancingModal = function() {
 };
 
 // Adverts
+function openImovelModal() {
+    const modal = document.getElementById('cadastroImovelModal');
+    modal.classList.add('show');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+}
 
-document.addEventListener('DOMContentLoaded', function() {
-    const arrow = document.querySelector('.minimal-arrow');
-    const ctaMinimal = document.querySelector('.cta-minimal');
-    const counter = document.querySelector('.counter');
+function closeImovelModal() {
+    const modal = document.getElementById('cadastroImovelModal');
+    modal.classList.remove('show');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = 'auto';
+}
 
-    function animateCounter() {
-        const target = parseInt(counter.getAttribute('data-target'));
-        let current = 0;
-        const duration = 1500;
-        const startTime = performance.now();
-
-        function updateCounter(currentTime) {
-            const elapsed = currentTime - startTime;
-            const progress = Math.min(elapsed / duration, 1);
-            
-            current = Math.floor(target * progress);
-            counter.textContent = current;
-            
-            if (progress < 1) {
-                requestAnimationFrame(updateCounter);
-            } else {
-                counter.textContent = target;
-            }
-        }
-        
-        requestAnimationFrame(updateCounter);
+// Fechar modal ao clicar fora dele
+document.getElementById('cadastroImovelModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeImovelModal();
     }
-
-    setTimeout(animateCounter, 500);
-
-    arrow.addEventListener('click', function(e) {
-        e.preventDefault();
-        
-        this.classList.add('clicked');
-        
-        setTimeout(() => {
-            this.classList.remove('clicked');
-        }, 400);
-        
-        setTimeout(() => {
-            window.open(ctaMinimal.href, '_blank');
-        }, 200);
-    });
 });
+
+// Fechar modal com a tecla ESC
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeImovelModal();
+    }
+});
+
 
 // Footer
 document.addEventListener('DOMContentLoaded', function() {
