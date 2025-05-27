@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Rassete Imóveis</title>
+    <link rel="stylesheet" href="../styles/bootstrap-5.3.3-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../styles/styles.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="../styles/assets/favicon.png">
+    <meta name="theme-color" content="#ffffff">
+</head>
+<body>
+    <!-- Header -->
+    <header id="header-container">
+        <!-- Green Banner -->
+        <div id="green-banner">
+            <div class="scroller">
+                <ul id="info-list">
+                    <li id="info-1">Novos lançamentos para 2025 estão chegando!</li>
+                    <li id="info-2">Visite nosso site para ofertas exclusivas!</li>
+                    <li id="info-3">Entre em contato: (47) 99977-6007</li>
+                    <li id="info-4">Assine nossa newsletter para novidades!</li>
+                    <li id="info-5">Imóveis com condições especiais de financiamento!</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-white sticky">
+            <div class="container">
+                <a class="brand" href="../index.html">
+                    <img class="logo" src="../styles/assets/logo.png" alt="Rassete Imóveis Logo">
+                </a>
+                <button class="menu" onclick="this.classList.toggle('opened');this.setAttribute('aria-expanded', this.classList.contains('opened'))" aria-label="Main Menu">
+                    <svg width="100" height="100" viewBox="0 0 100 100">
+                        <path class="line line1" d="M 20,29.000046 H 80.000231 C 80.000231,29.000046 94.498839,28.817352 94.532987,66.711331 94.543142,77.980673 90.966081,81.670246 85.259173,81.668997 79.552261,81.667751 75.000211,74.999942 75.000211,74.999942 L 25.000021,25.000058" />
+                        <path class="line line2" d="M 20,50 H 80" />
+                        <path class="line line3" d="M 20,70.999954 H 80.000231 C 80.000231,70.999954 94.498839,71.182648 94.532987,33.288669 94.543142,22.019327 90.966081,18.329754 85.259173,18.331003 79.552261,18.332249 75.000211,25.000058 75.000211,25.000058 L 25.000021,74.999942" />
+                    </svg>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarMenu">
+                    <ul class="nav-list ml-auto">
+                        <li class="menu-item"><a class="menu-link" href="./index.html">Início</a></li>
+                        <li class="menu-item"><a class="menu-link" onclick="openModal()">Quem Somos</a></li>
+                        <li class="menu-item dropdown d-none d-lg-block">
+                            <a class="menu-link dropdown-toggle" href="#" id="dropdownMenu" role="button" aria-haspopup="true" aria-expanded="false">
+                                Imóveis
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenu">
+                                <a class="dropdown-item" href="./pages/sell.html">Venda</a>
+                                <a class="dropdown-item" href="./pages/rent.html">Locação</a>
+                            </div>
+                        </li>
+                        <li class="menu-item d-lg-none"><a class="menu-link" href="#">Venda</a></li>
+                        <li class="menu-item d-lg-none"><a class="menu-link" href="#">Locação</a></li>
+                        <li class="menu-item"><a class="menu-link" onclick="openContactModal()" style="cursor: pointer;">Fale Conosco</a></li>
+                        <li class="menu-item">
+                            <a class="menu-link" onclick="openFavoritesModal()" style="cursor: pointer;">
+                                <i class="lni-star-filled"></i> Favoritos
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- About Modal -->
+            <div id="quemSomosModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 class="modal-title">Quem Somos</h2>
+                        <span class="close" onclick="closeModal()">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <p>João Serpa, Eliane Averbeck e Fabrício Romão, formam uma Sociedade pautada no respeito entre si, no compromisso de construir uma história que alie empreendedorismo e sucesso, na busca diária por trazer o melhor atendimento a quem mais importa: você.</p>
+                        <br>
+                        <p>Assim, é a Rassete Imóveis, uma empresa que chega para trazer novos ares ao mercado imobiliário de Navegantes, associando o melhor de dois mundos: a expertise de corretores com anos de experiência no mercado e a vontade de inovar, crescer e fazer diferente em um cenário que, muitas vezes, vê mais do mesmo.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Modal -->
+            <div id="faleConoscoModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 class="modal-title">Fale Conosco</h2>
+                        <span class="close" onclick="closeContactModal()">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <form class="contact-form" onsubmit="submitContactForm(event)">
+                            <div class="form-group">
+                                <label for="nome">Nome *</label>
+                                <input type="text" id="nome" name="nome" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email">Email *</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="telefone">Telefone *</label>
+                                <input type="tel" id="telefone" name="telefone" required placeholder="(47) 99999-9999">
+                            </div>
+                            
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="whatsapp" name="whatsapp">
+                                <label for="whatsapp">Prefiro contato via WhatsApp</label>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="mensagem">Mensagem *</label>
+                                <textarea id="mensagem" name="mensagem" required placeholder="Conte-nos como podemos ajudá-lo..."></textarea>
+                            </div>
+                            
+                            <button type="submit" class="submit-btn">Enviar Mensagem</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Favorites Modal -->
+            <div id="favoritosModal" class="modal">
+                <div class="modal-content favorites-modal">
+                    <div class="modal-header">
+                        <h2 class="modal-title">Meus Favoritos</h2>
+                        <span class="close" onclick="closeFavoritesModal()">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <div class="favorites-list">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main -->
+    <main>
+        
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section contact-section">
+                    <h3 class="contact-title">Contato</h3>
+                    <ul>
+                        <li>Avenida Prefeito Cirino Adolfo Cabral, 9077</li>
+                        <li>Sala 01 • CEP: 88.372-612</li>
+                        <li>Gravatá - Navegantes/SC</li>
+                        <li class="phone-group">
+                            <i class="fas fa-phone"></i>
+                            <a href="tel:+554730657794">(47) 3065-7794</a> / 
+                            <a href="tel:+554730117771">(47) 3011-7771</a>
+                        </li>
+                        <li class="mobile-group">
+                            <i class="fas fa-mobile-alt"></i>
+                            <span style="white-space: nowrap;">
+                                <a href="tel:+5547999776007">(47) 99977-6007</a> / 
+                                <a href="tel:+5547988719600">(47) 98871-9600</a> / 
+                                <a href="tel:+5547984061639">(47) 98406-1639</a>
+                            </span>
+                        </li>
+                        <li><a href="mailto:contato@rasseteimoveis.com.br">contato@rasseteimoveis.com.br</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section indicator">
+                    <h3 class="indicator-title">Indicador</h3>
+                    <div class="indicator-content">
+                        CUB/SC - Março/2025<br>
+                        <span class="price">R$ 2.907,85</span> +0,23%
+                    </div>
+                </div>
+
+                <div class="footer-section social">
+                    <a href="https://pt-br.facebook.com/rasseteimoveis" target="_blank" class="social-link facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://www.instagram.com/rasseteimoveis" target="_blank" class="social-link instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://wa.me/5547999776007" target="_blank" class="social-link whatsapp">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 Rassete Imóveis. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="../styles/bootstrap-5.3.3-dist/js/bootstrap.min.js"></script>
+    <script src="../scripts/script.js"></script>
+</body>
+</html>
