@@ -126,6 +126,10 @@ const NavbarModule = {
     navbarMenu: null,
     dropdownToggles: null,
     dropdownMenus: null,
+    navbar: null,
+    greenBanner: null,
+    isSticky: false,
+    scrollThreshold: 0,
     modals: {
         quemSomos: null,
         faleConosco: null,
@@ -147,11 +151,17 @@ const NavbarModule = {
         this.cacheElements();
         this.bindEvents();
         this.setupKeyboardNavigation();
+        // Aguardar um pouco para o green banner estar pronto
+        setTimeout(() => {
+            this.initSticky();
+        }, 500);
     },
 
     cacheElements() {
         this.menuButton = document.querySelector('.menu');
         this.navbarMenu = document.getElementById('navbarMenu');
+        this.navbar = document.querySelector('.navbar');
+        this.greenBanner = document.querySelector('#green-banner');
         this.dropdownToggles = document.querySelectorAll('.dropdown-toggle');
         this.dropdownMenus = document.querySelectorAll('.dropdown-menu');
         this.modals.quemSomos = document.getElementById('quemSomosModal');
@@ -162,6 +172,72 @@ const NavbarModule = {
         if (!this.menuButton || !this.navbarMenu) {
             console.warn('NavbarModule: Elementos essenciais da navbar não encontrados');
         }
+    },
+
+    initSticky() {
+        if (!this.navbar) {
+            console.warn('Navbar não encontrada');
+            return;
+        }
+
+        // Limpar qualquer classe sticky existente
+        this.navbar.classList.remove('sticky');
+        
+        // Resetar body
+        document.body.style.paddingTop = '';
+        document.body.style.removeProperty('padding-top');
+
+        // Calcular o threshold
+        this.calculateScrollThreshold();
+        
+        // Adicionar listener de scroll
+        window.addEventListener('scroll', () => this.handleScroll(), { passive: true });
+        
+        // Recalcular quando redimensionar
+        window.addEventListener('resize', () => this.calculateScrollThreshold());
+        
+        console.log('Sticky navbar inicializado');
+    },
+
+    calculateScrollThreshold() {
+        if (this.greenBanner) {
+            // Aguardar renderização
+            requestAnimationFrame(() => {
+                this.scrollThreshold = this.greenBanner.offsetTop + this.greenBanner.offsetHeight;
+                console.log('Threshold definido para:', this.scrollThreshold + 'px');
+            });
+        } else {
+            this.scrollThreshold = 60; // Fallback
+            console.log('Green banner não encontrado, usando fallback');
+        }
+    },
+
+    handleScroll() {
+        const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+        
+        if (currentScroll > this.scrollThreshold && !this.isSticky) {
+            this.makeSticky();
+        } else if (currentScroll <= this.scrollThreshold && this.isSticky) {
+            this.removeSticky();
+        }
+    },
+
+    makeSticky() {
+        if (!this.navbar || this.isSticky) return;
+        
+        this.isSticky = true;
+        this.navbar.classList.add('sticky');
+        
+        console.log('Navbar ficou sticky');
+    },
+
+    removeSticky() {
+        if (!this.navbar || !this.isSticky) return;
+        
+        this.isSticky = false;
+        this.navbar.classList.remove('sticky');
+        
+        console.log('Navbar removeu sticky');
     },
 
     bindEvents() {
@@ -306,26 +382,20 @@ const NavbarModule = {
 
         if (typeof CatalogModule !== 'undefined') {
             const favorites = CatalogModule.api.getFavorites();
-            console.log('Favoritos encontrados:', favorites);
             this.renderFavorites(favoritesContainer, favorites);
         } else {
-            console.warn('NavbarModule: CatalogModule não disponível');
             this.renderEmptyFavorites(favoritesContainer);
         }
     },
 
     renderFavorites(container, favoriteIds) {
         if (favoriteIds.length === 0) {
-            console.log('Nenhum favorito para renderizar');
             this.renderEmptyFavorites(container);
             return;
         }
 
-        console.log('Renderizando favoritos:', favoriteIds);
-
         const favoritesHtml = favoriteIds.map(id => {
             const propertyData = this.getPropertyData(id);
-            console.log(`Dados do imóvel ${id}:`, propertyData);
             return this.createFavoriteItemHtml(propertyData);
         }).join('');
 
@@ -345,26 +415,21 @@ const NavbarModule = {
     getPropertyData(propertyId) {
         const propertyButton = document.querySelector(`[data-property-id="${propertyId}"]`);
         if (!propertyButton) {
-            console.warn(`Botão com ID ${propertyId} não encontrado`);
             return { id: propertyId, title: 'Imóvel não encontrado', image: '', price: '', location: '' };
         }
 
         const propertyCard = propertyButton.closest('.property-card');
         if (!propertyCard) {
-            console.warn(`Card do imóvel ${propertyId} não encontrado`);
             return { id: propertyId, title: 'Card não encontrado', image: '', price: '', location: '' };
         }
 
-        console.log(`Analisando card do imóvel ${propertyId}`);
-        
         const allText = propertyCard.textContent.trim();
-        console.log('Texto completo do card:', allText);
-
         let title = '';
         let image = '';
         let price = '';
         let location = '';
 
+        // Buscar título
         const titleElements = propertyCard.querySelectorAll('h1, h2, h3, h4, h5, h6, .title, .nome, .descricao, [class*="title"]');
         for (const el of titleElements) {
             const text = el.textContent.trim();
@@ -374,30 +439,19 @@ const NavbarModule = {
             }
         }
 
-        if (!title) {
-            const lines = allText.split('\n').map(line => line.trim()).filter(line => line.length > 0);
-            for (const line of lines) {
-                if (!line.includes('R$') && 
-                    !line.includes('m²') && 
-                    !line.includes('Cód.') &&
-                    !line.includes(' - ') &&
-                    line.length > 10) {
-                    title = line;
-                    break;
-                }
-            }
-        }
-
+        // Buscar imagem
         const imgEl = propertyCard.querySelector('img');
         if (imgEl && imgEl.src && !imgEl.src.includes('data:')) {
             image = imgEl.src;
         }
 
+        // Buscar preço
         const priceMatch = allText.match(/R\$\s*[\d,.]+(?:,\d{2})?/);
         if (priceMatch) {
             price = priceMatch[0];
         }
 
+        // Buscar localização
         const locationMatch = allText.match(/([A-Za-zÀ-ÿ\s]+)\s*-\s*([A-Za-zÀ-ÿ\s\/]+)/);
         if (locationMatch) {
             location = locationMatch[0];
@@ -408,10 +462,7 @@ const NavbarModule = {
             title = codeMatch ? `Imóvel Código ${codeMatch[1]}` : `Imóvel ${propertyId}`;
         }
 
-        const result = { id: propertyId, title, image, price, location };
-        console.log(`Dados capturados para ${propertyId}:`, result);
-        
-        return result;
+        return { id: propertyId, title, image, price, location };
     },
 
     createFavoriteItemHtml(property) {
@@ -447,10 +498,6 @@ const NavbarModule = {
         alert(message);
     },
 
-    isElementVisible(element) {
-        return element && element.offsetParent !== null;
-    },
-
     api: {
         openQuemSomosModal: () => NavbarModule.openModal('quemSomos'),
         closeQuemSomosModal: () => NavbarModule.closeModal('quemSomos'),
@@ -464,6 +511,22 @@ const NavbarModule = {
     },
 
     destroy() {
+        // Limpar tudo antes de destruir
+        if (this.navbar) {
+            this.navbar.classList.remove('sticky');
+        }
+        
+        // Resetar body completamente
+        document.body.style.paddingTop = '';
+        document.body.style.removeProperty('padding-top');
+        document.body.style.overflow = '';
+        document.body.style.removeProperty('overflow');
+        
+        // Remover listeners de scroll
+        window.removeEventListener('scroll', this.handleScroll);
+        window.removeEventListener('resize', this.calculateScrollThreshold);
+        
+        // Outros cleanups
         if (this.menuButton) {
             this.menuButton.removeEventListener('click', this.toggleMenu);
         }
@@ -480,10 +543,14 @@ const NavbarModule = {
             this.forms.contact.removeEventListener('submit', this.handleContactForm);
         }
         
-        document.body.style.overflow = 'auto';
+        this.isSticky = false;
     }
 };
 
+// Inicializar
+NavbarModule.init();
+
+// Funções globais
 function openModal() {
     NavbarModule.api.openQuemSomosModal();
 }

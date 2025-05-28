@@ -148,7 +148,39 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1000;
+}
+
+/* Navbar Sticky - Sem padding no body */
+.navbar.sticky {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  animation: slideDown 0.3s ease-out;
+  transform: translateZ(0); /* Força aceleração por hardware */
+}
+
+/* Animação suave quando fica sticky */
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Ajustes visuais quando sticky - SEM mudança no brand/logo */
+.navbar.sticky .menu-link {
+  padding: 8px 12px;
 }
 
 .brand {
@@ -164,6 +196,7 @@ body {
 .logo {
   height: 50px;
   margin-right: 10px;
+  transition: height 0.3s ease;
 }
 
 .brand:hover {
@@ -189,7 +222,7 @@ body {
   font-weight: 500;
   padding: 10px 15px;
   border-radius: 5px;
-  transition: color 0.3s ease, background-color 0.3s ease;
+  transition: color 0.3s ease, background-color 0.3s ease, padding 0.3s ease;
   text-decoration: none;
 }
 
@@ -208,7 +241,8 @@ body {
   transform: translateY(10px);
   display: none;
   background-color: #ffffff;
-  z-index: 1000;
+  z-index: 1001;
+  position: absolute;
 }
 
 .dropdown-menu.show {
@@ -223,6 +257,7 @@ body {
   padding: 10px 15px;
   text-decoration: none;
   transition: background-color 0.3s ease, color 0.3s ease;
+  display: block;
 }
 
 .dropdown-item:hover,
@@ -230,6 +265,122 @@ body {
   background-color: #f0f0f0;
   color: #004d40;
   border-radius: 5px;
+}
+
+/* About Modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 2000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.3s ease;
+}
+
+.modal.show {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background-color: white;
+  margin: 20px;
+  padding: 0;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 600px;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideInUp 0.4s ease;
+  overflow: hidden;
+}
+
+.modal-header {
+  background: linear-gradient(135deg, #004d40 0%, #00695c 100%);
+  color: white;
+  padding: 24px 32px;
+  position: relative;
+}
+
+.modal-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23dots)"/></svg>');
+  pointer-events: none;
+}
+
+.modal-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.modal-body {
+  padding: 32px;
+  line-height: 1.7;
+  color: #374151;
+  font-size: 1.05rem;
+}
+
+.close {
+  position: absolute;
+  padding-bottom: 4px;
+  top: 20px;
+  right: 24px;
+  color: white;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 3;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.close:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInUp {
+  from { 
+      opacity: 0;
+      transform: translateY(50px) scale(0.95);
+  }
+  to { 
+      opacity: 1;
+      transform: translateY(0) scale(1);
+  }
+}
+
+/* Media queries responsivos - SEM mudança no logo */
+@media (max-width: 992px) {
+  /* Navbar responsivo sem alterar logo */
+}
+
+@media (max-width: 576px) {
+  /* Navbar responsivo sem alterar logo */
 }
 
 /* About Modal */
