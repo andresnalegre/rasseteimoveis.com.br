@@ -4,10 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Login • Ressete imobiliaria</title>
-  <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    /* Fundo animado */
     @keyframes gradient {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
@@ -24,7 +22,6 @@
       justify-content: center;
       font-family: 'Segoe UI', sans-serif;
     }
-    /* Card de login */
     .login-card {
       background: #ffffff;
       border: none;
@@ -74,6 +71,50 @@
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       padding: 10px;
     }
+    .notification {
+      display: none;
+      margin-bottom: 1rem;
+      padding: 1rem;
+      border-radius: 0.75rem;
+      border: none;
+      font-weight: 500;
+      animation: slideIn 0.3s ease-out;
+    }
+    .notification.success {
+      background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+      color: #155724;
+      border-left: 4px solid #28a745;
+      box-shadow: 0 4px 12px rgba(40, 167, 69, 0.15);
+    }
+    .notification.error {
+      background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+      color: #721c24;
+      border-left: 4px solid #dc3545;
+      box-shadow: 0 4px 12px rgba(220, 53, 69, 0.15);
+    }
+    .notification-icon {
+      display: inline-block;
+      margin-right: 0.5rem;
+      font-size: 1.1em;
+    }
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+      20%, 40%, 60%, 80% { transform: translateX(10px); }
+    }
+    .shake {
+      animation: shake 0.5s;
+    }
   </style>
 </head>
 <body>
@@ -84,17 +125,23 @@
       <h2>Login</h2>
       <p>Administrador</p>
     </div>
-    <form action="/admin/login" method="POST">
+    
+    <div class="notification" id="notification">
+      <span class="notification-icon" id="notificationIcon"></span>
+      <span id="notificationText"></span>
+    </div>
+    
+    <form id="loginForm">
       <div class="mb-3">
         <label for="inputUser" class="form-label">Usuário</label>
-        <input type="text" class="form-control" id="inputUser" name="username" placeholder="admin" required>
+        <input type="text" class="form-control" id="inputUser" name="username" placeholder="admin">
       </div>
       <div class="mb-4">
         <label for="inputPassword" class="form-label">Senha</label>
-        <input type="password" class="form-control" id="inputPassword" name="password" placeholder="••••••••" required>
+        <input type="password" class="form-control" id="inputPassword" name="password" placeholder="••••••••">
       </div>
       <div class="d-grid">
-        <button type="submit" class="btn btn-login text-white">Entrar como Admin</button>
+        <button type="submit" class="btn btn-login text-white" id="loginButton">Entrar como Admin</button>
       </div>
       <div class="text-center mt-3">
         <a href="#" class="text-decoration-none" style="color: #1fae4f;">Recuperar senha</a>
@@ -102,7 +149,165 @@
     </form>
   </div>
 
-  <!-- Bootstrap JS Bundle -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script>
+    const validCredentials = {
+      username: 'admin',
+      password: 'rassete123'
+    };
+    
+    const validUsers = ['admin'];
+    
+    const loginForm = document.getElementById('loginForm');
+    const usernameInput = document.getElementById('inputUser');
+    const passwordInput = document.getElementById('inputPassword');
+    const notification = document.getElementById('notification');
+    const notificationIcon = document.getElementById('notificationIcon');
+    const notificationText = document.getElementById('notificationText');
+    const loginButton = document.getElementById('loginButton');
+    
+    document.addEventListener('DOMContentLoaded', function() {
+      if (isUserAuthenticated()) {
+        window.location.href = 'dashboard.html';
+      }
+      usernameInput.focus();
+    });
+    
+    loginForm.addEventListener('submit', handleLogin);
+    
+    function handleLogin(event) {
+      event.preventDefault();
+      
+      const username = usernameInput.value.trim();
+      const password = passwordInput.value;
+      
+      if (!username && !password) {
+        showNotification('Por favor, preencha os campos de usuário e senha', 'error');
+        usernameInput.focus();
+        return;
+      }
+      
+      if (username && !password) {
+        showNotification('Por favor, preencha o campo de senha', 'error');
+        passwordInput.focus();
+        return;
+      }
+      
+      if (!username && password) {
+        showNotification('Por favor, preencha o campo de usuário', 'error');
+        usernameInput.focus();
+        return;
+      }
+      
+      setLoadingState(true);
+      hideNotification();
+      
+      setTimeout(() => {
+        if (!validUsers.includes(username)) {
+          showNotification('Usuário não cadastrado no sistema', 'error');
+          setLoadingState(false);
+          usernameInput.value = '';
+          passwordInput.value = '';
+          usernameInput.focus();
+          
+          loginForm.classList.add('shake');
+          setTimeout(() => {
+            loginForm.classList.remove('shake');
+          }, 500);
+          return;
+        }
+        
+        if (authenticateUser(username, password)) {
+          showNotification('Login realizado com sucesso!', 'success');
+          createUserSession();
+          setTimeout(() => {
+            window.location.href = 'dashboard.html';
+          }, 1000);
+        } else {
+          showNotification('Usuário ou senha incorretos!', 'error');
+          setLoadingState(false);
+          passwordInput.value = '';
+          passwordInput.focus();
+          
+          loginForm.classList.add('shake');
+          setTimeout(() => {
+            loginForm.classList.remove('shake');
+          }, 500);
+        }
+      }, 800);
+    }
+    
+    function authenticateUser(username, password) {
+      return username === validCredentials.username && 
+             password === validCredentials.password;
+    }
+    
+    function createUserSession() {
+      const sessionData = {
+        username: validCredentials.username,
+        loginTime: new Date().toISOString(),
+        isAuthenticated: true
+      };
+      
+      const sessionStorage = window.sessionStorage || {};
+      const localStorage = window.localStorage || {};
+      
+      try {
+        localStorage.rassete_admin_session = JSON.stringify(sessionData);
+        sessionStorage.rassete_admin_active = 'true';
+      } catch (error) {
+        console.error('Armazenamento não disponível');
+      }
+    }
+    
+    function isUserAuthenticated() {
+      const localStorage = window.localStorage || {};
+      const sessionStorage = window.sessionStorage || {};
+      
+      const session = localStorage.rassete_admin_session;
+      const activeSession = sessionStorage.rassete_admin_active;
+      
+      if (!session || !activeSession) return false;
+      
+      try {
+        const sessionData = JSON.parse(session);
+        return sessionData.isAuthenticated === true;
+      } catch (error) {
+        return false;
+      }
+    }
+    
+    function showNotification(message, type) {
+      notificationText.textContent = message;
+      notification.className = `notification ${type}`;
+      
+      if (type === 'success') {
+        notificationIcon.textContent = '✓';
+      } else if (type === 'error') {
+        notificationIcon.textContent = '⚠';
+      }
+      
+      notification.style.display = 'block';
+      
+      if (type === 'error') {
+        setTimeout(hideNotification, 5000);
+      }
+    }
+    
+    function hideNotification() {
+      notification.style.display = 'none';
+    }
+    
+    function setLoadingState(isLoading) {
+      if (isLoading) {
+        loginButton.disabled = true;
+        loginButton.innerHTML = 'Entrando...';
+      } else {
+        loginButton.disabled = false;
+        loginButton.innerHTML = 'Entrar como Admin';
+      }
+    }
+  </script>
 </body>
 </html>

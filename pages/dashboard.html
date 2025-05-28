@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Admin • Rassete Imóveis</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link rel="icon" type="image/png" sizes="32x32" href="../styles/assets/favicon.png">
+<meta name="theme-color" content="#ffffff">
+<style>
+:root {
+    --primary-color: #1fae4f;
+    --primary-dark: #17b978;
+    --primary-light: rgba(31, 174, 79, 0.1);
+    --secondary-color: #6c757d;
+    --success-color: #28a745;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+    --dark-color: #343a40;
+    --light-bg: #f8f9fa;
+    --white: #ffffff;
+    --shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    --shadow-sm: 0 4px 15px rgba(0, 0, 0, 0.1);
+    --border-radius: 1rem;
+    --border-radius-sm: 0.75rem;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--dark-color);
+    overflow-x: hidden;
+}
+
+.navbar {
+    background: var(--white) !important;
+    backdrop-filter: blur(20px);
+    box-shadow: var(--shadow-sm);
+    border-bottom: 1px solid rgba(31, 174, 79, 0.1);
+    padding: 1rem 0;
+}
+
+.navbar .logo {
+    height: 50px;
+    width: auto;
+}
+
+.navbar-nav .nav-link {
+    font-weight: 600;
+    color: var(--dark-color) !important;
+    margin: 0 0.5rem;
+    padding: 0.5rem 1rem !important;
+    border-radius: var(--border-radius-sm);
+    transition: all 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover {
+    background: var(--primary-light);
+    color: var(--primary-color) !important;
+    transform: translateY(-2px);
+}
+
+.admin-badge {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    color: var(--white);
+    padding: 0.4rem 1rem;
+    border-radius: 2rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: var(--shadow-sm);
+}
+
+.main-container {
+    padding: 2rem 0;
+}
+
+.page-header {
+    background: linear-gradient(135deg, #004d40 0%, #00695c 50%, #00796b 100%);
+    color: var(--white);
+    padding: 5rem 0;
+    margin-bottom: 3rem;
+    border-radius: 2rem;
+    box-shadow: 
+        0 25px 50px rgba(0, 77, 64, 0.4),
+        0 15px 35px rgba(0, 77, 64, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.page-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.15) 0%, transparent 60%),
+        radial-gradient(circle at 70% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+        linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.05) 50%, transparent 70%);
+}
+
+.page-header::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 100%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.04), transparent);
+    transform: rotate(15deg);
+    animation: shimmer 12s ease-in-out infinite;
+}
+
+.header-content {
+    position: relative;
+    z-index: 3;
+}
+
+.icon-wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    backdrop-filter: blur(20px);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.icon-wrapper i {
+    font-size: 2rem;
+    color: rgba(255, 255, 255, 0.95);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes shimmer {
+    0%, 100% { 
+        transform: translateX(-100%) rotate(15deg);
+        opacity: 0;
+    }
+    50% { 
+        transform: translateX(100%) rotate(15deg);
+        opacity: 1;
+    }
+}
+
+.page-header h1 {
+    font-size: 3.5rem;
+    font-weight: 900;
+    margin-bottom: 1.5rem;
+    text-shadow: 
+        0 4px 8px rgba(0, 0, 0, 0.3),
+        0 2px 4px rgba(0, 0, 0, 0.2);
+    position: relative;
+    z-index: 2;
+    letter-spacing: -1px;
+}
+
+.page-header p {
+    font-size: 1.3rem;
+    opacity: 0.95;
+    margin-bottom: 0;
+    font-weight: 400;
+    position: relative;
+    z-index: 2;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.stats-card {
+    background: var(--white);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.stats-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-color), var(--primary-dark));
+}
+
+.stats-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 
+        0 25px 50px rgba(0, 77, 64, 0.2),
+        0 15px 35px rgba(0, 77, 64, 0.15);
+}
+
+.stats-card .icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--white);
+}
+
+.stats-card.total .icon { background: linear-gradient(135deg, #2c3e50, #34495e); }
+.stats-card.available .icon { background: linear-gradient(135deg, var(--success-color), #20c997); }
+.stats-card.reserved .icon { background: linear-gradient(135deg, var(--warning-color), #fd7e14); }
+.stats-card.sold .icon { background: linear-gradient(135deg, #f39c12, #e67e22); }
+
+.stats-card .number {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--dark-color);
+    margin-bottom: 0.25rem;
+}
+
+.stats-card .label {
+    font-size: 0.95rem;
+    color: var(--secondary-color);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.card {
+    background: var(--white);
+    border: none;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 2rem;
+    overflow: hidden;
+}
+
+.card-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    color: var(--white);
+    padding: 1.5rem;
+    border: none;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.card-header .btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: var(--white);
+    font-weight: 600;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.card-header .btn:hover {
+    background: var(--white);
+    color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+.card-body {
+    padding: 2rem;
+}
+
+.form-control {
+    border: 2px solid #e9ecef;
+    border-radius: var(--border-radius-sm);
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(31, 174, 79, 0.15);
+    transform: translateY(-1px);
+}
+
+.form-select {
+    border: 2px solid #e9ecef;
+    border-radius: var(--border-radius-sm);
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(31, 174, 79, 0.15);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    border: none;
+    border-radius: var(--border-radius-sm);
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+    background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
+}
+
+.btn-outline-secondary {
+    border: 2px solid #dee2e6;
+    border-radius: var(--border-radius-sm);
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-secondary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+.table {
+    margin-bottom: 0;
+}
+
+.table th {
+    background: var(--light-bg);
+    border: none;
+    font-weight: 700;
+    color: var(--dark-color);
+    padding: 1rem;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.5px;
+}
+
+.table td {
+    padding: 1rem;
+    border: none;
+    border-bottom: 1px solid #f1f3f4;
+    vertical-align: middle;
+}
+
+.table tbody tr {
+    transition: all 0.3s ease;
+}
+
+.table tbody tr:hover {
+    background: var(--primary-light);
+    transform: scale(1.01);
+}
+
+.table img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: var(--border-radius-sm);
+    box-shadow: var(--shadow-sm);
+}
+
+.badge {
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.badge.bg-success { background: linear-gradient(135deg, var(--success-color), #20c997) !important; }
+.badge.bg-warning { background: linear-gradient(135deg, var(--warning-color), #fd7e14) !important; color: var(--white) !important; }
+.badge.bg-danger { background: linear-gradient(135deg, #f39c12, #e67e22) !important; }
+.badge.bg-secondary { background: linear-gradient(135deg, var(--secondary-color), #495057) !important; }
+
+.btn-sm {
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--border-radius-sm);
+    font-size: 0.8rem;
+    margin: 0 0.1rem;
+    transition: all 0.3s ease;
+}
+
+.btn-sm:hover {
+    transform: translateY(-2px);
+}
+
+.modal-content {
+    border: none;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+
+.modal-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    color: var(--white);
+    border: none;
+    padding: 1.5rem;
+}
+
+.modal-body {
+    padding: 2rem;
+}
+
+.modal-footer {
+    border: none;
+    padding: 1.5rem 2rem;
+    background: var(--light-bg);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--secondary-color);
+}
+
+.empty-state i {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.image-preview {
+    max-width: 100px;
+    max-height: 100px;
+    object-fit: cover;
+    border-radius: var(--border-radius-sm);
+    margin: 0.25rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 1rem 1.5rem;
+    border-radius: var(--border-radius-sm);
+    font-weight: 600;
+    z-index: 9999;
+    max-width: 400px;
+    transform: translateX(100%);
+    transition: all 0.3s ease;
+}
+
+.notification.show {
+    transform: translateX(0);
+}
+
+.notification.success {
+    background: linear-gradient(135deg, #d4edda, #c3e6cb);
+    color: #155724;
+    border-left: 4px solid var(--success-color);
+}
+
+.notification.error {
+    background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+    color: #721c24;
+    border-left: 4px solid var(--danger-color);
+}
+
+@media (max-width: 768px) {
+    .page-header h1 { font-size: 2rem; }
+    .stats-grid { grid-template-columns: 1fr; }
+    .card-body { padding: 1.5rem; }
+    .main-container { padding: 1rem 0; }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.6s ease-out;
+}
+</style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg sticky-top">
+<div class="container">
+    <a class="navbar-brand" href="../index.html">
+        <img class="logo" src="../styles/assets/logo.png" alt="Rassete Imóveis Logo">
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+                <span class="nav-link admin-badge">
+                    <i class="fas fa-crown"></i> Administrador
+                </span>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="../index.html">
+                    <i class="fas fa-external-link-alt"></i> Ver Site
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" onclick="logoutUser()" style="cursor: pointer;">
+                    <i class="fas fa-sign-out-alt"></i> Sair
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+</nav>
+
+<main>
+<div class="container main-container">
+    <div class="page-header fade-in-up">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <div class="header-content">
+                    <div class="icon-wrapper mb-4">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <h1>Dashboard</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="stats-grid fade-in-up">
+        <div class="stats-card total">
+            <div class="icon">
+                <i class="fas fa-home"></i>
+            </div>
+            <div class="number" id="totalProperties">0</div>
+            <div class="label">Total de Imóveis</div>
+        </div>
+        <div class="stats-card available">
+            <div class="icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="number" id="availableProperties">0</div>
+            <div class="label">Disponíveis</div>
+        </div>
+        <div class="stats-card reserved">
+            <div class="icon">
+                <i class="fas fa-clock"></i>
+            </div>
+            <div class="number" id="reservedProperties">0</div>
+            <div class="label">Reservados</div>
+        </div>
+        <div class="stats-card sold">
+            <div class="icon">
+                <i class="fas fa-handshake"></i>
+            </div>
+            <div class="number" id="soldProperties">0</div>
+            <div class="label">Vendidos</div>
+        </div>
+    </div>
+
+    <div class="card fade-in-up">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <div>
+                <i class="fas fa-building"></i> Gestão de Imóveis
+            </div>
+            <button class="btn btn-sm" onclick="openAddModal()">
+                <i class="fas fa-plus"></i> Adicionar
+            </button>
+        </div>
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <input type="text" class="form-control" id="searchInput" placeholder="🔍 Buscar por título ou localização..." onkeyup="filterProperties()">
+                </div>
+                <div class="col-md-3">
+                    <select class="form-select" id="statusFilter" onchange="filterProperties()">
+                        <option value="">📊 Todos os Status</option>
+                        <option value="disponivel">✅ Disponível</option>
+                        <option value="reservado">⏰ Reservado</option>
+                        <option value="vendido">🤝 Vendido</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select class="form-select" id="typeFilter" onchange="filterProperties()">
+                        <option value="">🏠 Todos os Tipos</option>
+                        <option value="casa">🏠 Casa</option>
+                        <option value="apartamento">🏢 Apartamento</option>
+                        <option value="terreno">🌿 Terreno</option>
+                        <option value="comercial">🏬 Comercial</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-outline-secondary w-100" onclick="clearFilters()">
+                        <i class="fas fa-sync-alt"></i> Limpar
+                    </button>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Foto</th>
+                            <th>Título</th>
+                            <th>Tipo</th>
+                            <th>Localização</th>
+                            <th>Preço</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="propertiesTableBody">
+                        <tr>
+                            <td colspan="7" class="empty-state">
+                                <i class="fas fa-home"></i>
+                                <p class="mt-3 mb-0">Nenhum imóvel cadastrado ainda</p>
+                                <small class="text-muted">Comece adicionando seu primeiro imóvel</small>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</main>
+
+<div class="modal fade" id="propertyModal" tabindex="-1">
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="modalTitle">
+                <i class="fas fa-plus-circle"></i> Adicionar Imóvel
+            </h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+            <form id="propertyForm">
+                <input type="hidden" id="propertyId">
+                
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Título do Imóvel *</label>
+                            <input type="text" class="form-control" id="title">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label for="type" class="form-label">Tipo *</label>
+                            <select class="form-select" id="type">
+                                <option value="">Selecione...</option>
+                                <option value="casa">Casa</option>
+                                <option value="apartamento">Apartamento</option>
+                                <option value="terreno">Terreno</option>
+                                <option value="comercial">Comercial</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="price" class="form-label">Preço (R$) *</label>
+                            <input type="number" class="form-control" id="price" step="0.01">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="status" class="form-label">Status *</label>
+                            <select class="form-select" id="status">
+                                <option value="disponivel">Disponível</option>
+                                <option value="reservado">Reservado</option>
+                                <option value="vendido">Vendido</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="location" class="form-label">Localização *</label>
+                    <input type="text" class="form-control" id="location" placeholder="Ex: Centro, São Paulo - SP">
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label for="bedrooms" class="form-label">Quartos</label>
+                            <input type="number" class="form-control" id="bedrooms" min="0">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label for="bathrooms" class="form-label">Banheiros</label>
+                            <input type="number" class="form-control" id="bathrooms" min="0">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label for="area" class="form-label">Área (m²)</label>
+                            <input type="number" class="form-control" id="area" step="0.01" min="0.01">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="description" class="form-label">Descrição</label>
+                    <textarea class="form-control" id="description" rows="3" placeholder="Descreva as características do imóvel..."></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label for="images" class="form-label">Imagens</label>
+                    <input type="file" class="form-control" id="images" multiple accept="image/*" onchange="previewImages()">
+                    <div class="mt-2" id="imagePreview"></div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary" onclick="saveProperty()">
+                <i class="fas fa-save"></i> Salvar Imóvel
+            </button>
+        </div>
+    </div>
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+let properties = [];
+let currentEditingId = null;
+let currentImages = [];
+
+document.addEventListener('DOMContentLoaded', function() {
+    checkAuthentication();
+    loadProperties();
+    updateStats();
+});
+
+function checkAuthentication() {
+    try {
+        const session = localStorage.getItem('rassete_admin_session');
+        const activeSession = sessionStorage.getItem('rassete_admin_active');
+        
+        if (!session || !activeSession) {
+            window.location.href = 'login.html';
+            return;
+        }
+        
+        const sessionData = JSON.parse(session);
+        if (!sessionData.isAuthenticated) {
+            window.location.href = 'login.html';
+        }
+    } catch (error) {
+        window.location.href = 'login.html';
+    }
+}
+
+function loadProperties() {
+    try {
+        const savedProperties = localStorage.getItem('rassete_properties');
+        if (savedProperties) {
+            properties = JSON.parse(savedProperties);
+        }
+    } catch (error) {
+        properties = [];
+    }
+    renderProperties();
+    updateStats();
+}
+
+function saveToStorage() {
+    try {
+        localStorage.setItem('rassete_properties', JSON.stringify(properties));
+    } catch (error) {
+        showNotification('Erro ao salvar dados', 'error');
+    }
+}
+
+function renderProperties(filteredProperties = null) {
+    const tbody = document.getElementById('propertiesTableBody');
+    const propertiesToRender = filteredProperties || properties;
+
+    if (propertiesToRender.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="7" class="empty-state">
+                    <i class="fas fa-home"></i>
+                    <p class="mt-3 mb-0">Nenhum imóvel encontrado</p>
+                    <small class="text-muted">Tente ajustar os filtros ou adicione um novo imóvel</small>
+                </td>
+            </tr>
+        `;
+        return;
+    }
+
+    tbody.innerHTML = propertiesToRender.map(property => `
+        <tr>
+            <td>
+                ${property.images && property.images.length > 0 
+                    ? `<img src="${property.images[0]}" alt="${property.title}">` 
+                    : '<div class="bg-light d-flex align-items-center justify-content-center" style="width:60px;height:60px;border-radius:0.75rem"><i class="fas fa-image text-muted"></i></div>'
+                }
+            </td>
+            <td>
+                <strong>${property.title}</strong>
+                ${property.bedrooms ? `<br><small class="text-muted"><i class="fas fa-bed"></i> ${property.bedrooms} quartos, <i class="fas fa-bath"></i> ${property.bathrooms} banheiros</small>` : ''}
+            </td>
+            <td><span class="badge bg-secondary">${capitalizeFirst(property.type)}</span></td>
+            <td><i class="fas fa-map-marker-alt text-muted"></i> ${property.location}</td>
+            <td><strong>R$ ${formatPrice(property.price)}</strong></td>
+            <td><span class="badge ${getStatusClass(property.status)}">${capitalizeFirst(property.status)}</span></td>
+            <td>
+                <button class="btn btn-sm btn-outline-primary" onclick="editProperty('${property.id}')" title="Editar">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger" onclick="deleteProperty('${property.id}')" title="Excluir">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </td>
+        </tr>
+    `).join('');
+}
+
+function updateStats() {
+    const total = properties.length;
+    const available = properties.filter(p => p.status === 'disponivel').length;
+    const reserved = properties.filter(p => p.status === 'reservado').length;
+    const sold = properties.filter(p => p.status === 'vendido').length;
+
+    document.getElementById('totalProperties').textContent = total;
+    document.getElementById('availableProperties').textContent = available;
+    document.getElementById('reservedProperties').textContent = reserved;
+    document.getElementById('soldProperties').textContent = sold;
+}
+
+function openAddModal() {
+    currentEditingId = null;
+    currentImages = [];
+    document.getElementById('modalTitle').innerHTML = '<i class="fas fa-plus-circle"></i> Adicionar Imóvel';
+    document.getElementById('propertyForm').reset();
+    document.getElementById('imagePreview').innerHTML = '';
+    new bootstrap.Modal(document.getElementById('propertyModal')).show();
+}
+
+function editProperty(id) {
+    const property = properties.find(p => p.id === id);
+    if (!property) return;
+
+    currentEditingId = id;
+    currentImages = property.images || [];
+    document.getElementById('modalTitle').innerHTML = '<i class="fas fa-edit"></i> Editar Imóvel';
+    
+    document.getElementById('propertyId').value = property.id;
+    document.getElementById('title').value = property.title;
+    document.getElementById('type').value = property.type;
+    document.getElementById('price').value = property.price;
+    document.getElementById('status').value = property.status;
+    document.getElementById('location').value = property.location;
+    document.getElementById('bedrooms').value = property.bedrooms || '';
+    document.getElementById('bathrooms').value = property.bathrooms || '';
+    document.getElementById('area').value = property.area || '';
+    document.getElementById('description').value = property.description || '';
+
+    const preview = document.getElementById('imagePreview');
+    if (currentImages && currentImages.length > 0) {
+        preview.innerHTML = currentImages.map(img => 
+            `<img src="${img}" class="image-preview" alt="Preview">`
+        ).join('');
+    } else {
+        preview.innerHTML = '';
+    }
+
+    new bootstrap.Modal(document.getElementById('propertyModal')).show();
+}
+
+function saveProperty() {
+    const title = document.getElementById('title').value.trim();
+    const type = document.getElementById('type').value;
+    const price = parseFloat(document.getElementById('price').value);
+    const status = document.getElementById('status').value;
+    const location = document.getElementById('location').value.trim();
+    const area = parseFloat(document.getElementById('area').value) || 0;
+
+    if (!title || !type || !price || !status || !location) {
+        showNotification('Por favor, preencha todos os campos obrigatórios', 'error');
+        return;
+    }
+
+    if (area <= 0) {
+        showNotification('A área deve ser maior que zero', 'error');
+        return;
+    }
+
+    const propertyData = {
+        id: currentEditingId || generateId(),
+        title: title,
+        type: type,
+        price: price,
+        status: status,
+        location: location,
+        bedrooms: parseInt(document.getElementById('bedrooms').value) || 0,
+        bathrooms: parseInt(document.getElementById('bathrooms').value) || 0,
+        area: area,
+        description: document.getElementById('description').value.trim(),
+        images: currentImages,
+        createdAt: currentEditingId ? properties.find(p => p.id === currentEditingId).createdAt : new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+    };
+
+    if (currentEditingId) {
+        const index = properties.findIndex(p => p.id === currentEditingId);
+        properties[index] = propertyData;
+        showNotification('Imóvel atualizado com sucesso!', 'success');
+    } else {
+        properties.push(propertyData);
+        showNotification('Imóvel adicionado com sucesso!', 'success');
+    }
+
+    saveToStorage();
+    renderProperties();
+    updateStats();
+    
+    bootstrap.Modal.getInstance(document.getElementById('propertyModal')).hide();
+}
+
+function deleteProperty(id) {
+    if (confirm('Tem certeza que deseja excluir este imóvel? Esta ação não pode ser desfeita.')) {
+        properties = properties.filter(p => p.id !== id);
+        saveToStorage();
+        renderProperties();
+        updateStats();
+        showNotification('Imóvel excluído com sucesso!', 'success');
+    }
+}
+
+function filterProperties() {
+    const search = document.getElementById('searchInput').value.toLowerCase();
+    const statusFilter = document.getElementById('statusFilter').value;
+    const typeFilter = document.getElementById('typeFilter').value;
+
+    let filtered = properties.filter(property => {
+        const matchSearch = property.title.toLowerCase().includes(search) || 
+                           property.location.toLowerCase().includes(search);
+        const matchStatus = !statusFilter || property.status === statusFilter;
+        const matchType = !typeFilter || property.type === typeFilter;
+        
+        return matchSearch && matchStatus && matchType;
+    });
+
+    renderProperties(filtered);
+}
+
+function clearFilters() {
+    document.getElementById('searchInput').value = '';
+    document.getElementById('statusFilter').value = '';
+    document.getElementById('typeFilter').value = '';
+    renderProperties();
+}
+
+function previewImages() {
+    const input = document.getElementById('images');
+    const preview = document.getElementById('imagePreview');
+    
+    if (!currentImages) currentImages = [];
+    
+    if (input.files && input.files.length > 0) {
+        Array.from(input.files).forEach(file => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                currentImages.push(e.target.result);
+                updateImagePreview();
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+}
+
+function updateImagePreview() {
+    const preview = document.getElementById('imagePreview');
+    if (currentImages && currentImages.length > 0) {
+        preview.innerHTML = currentImages.map((img, index) => 
+            `<div style="position: relative; display: inline-block; margin: 0.25rem;">
+                <img src="${img}" class="image-preview" alt="Preview">
+                <button type="button" onclick="removeImage(${index})" style="position: absolute; top: -5px; right: -5px; background: #dc3545; color: white; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 12px; cursor: pointer;">×</button>
+            </div>`
+        ).join('');
+    } else {
+        preview.innerHTML = '';
+    }
+}
+
+function removeImage(index) {
+    currentImages.splice(index, 1);
+    updateImagePreview();
+}
+
+function logoutUser() {
+    if (confirm('Deseja realmente sair do painel administrativo?')) {
+        try {
+            localStorage.removeItem('rassete_admin_session');
+            sessionStorage.removeItem('rassete_admin_active');
+        } catch (error) {
+            console.error('Erro ao fazer logout');
+        }
+        window.location.href = 'login.html';
+    }
+}
+
+function showNotification(message, type) {
+    const existingNotification = document.querySelector('.notification');
+    if (existingNotification) {
+        existingNotification.remove();
+    }
+
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.innerHTML = `
+        <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-triangle'}"></i>
+        ${message}
+    `;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => notification.classList.add('show'), 100);
+    
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => notification.remove(), 300);
+    }, 4000);
+}
+
+function generateId() {
+    return Date.now().toString(36) + Math.random().toString(36).substr(2);
+}
+
+function capitalizeFirst(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+function formatPrice(price) {
+    return new Intl.NumberFormat('pt-BR').format(price);
+}
+
+function getStatusClass(status) {
+    switch(status) {
+        case 'disponivel': return 'bg-success';
+        case 'reservado': return 'bg-warning';
+        case 'vendido': return 'bg-danger';
+        default: return 'bg-secondary';
+    }
+}
+</script>
+</body>
+</html>
