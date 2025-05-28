@@ -6,6 +6,7 @@
 <title>Admin • Rassete Imóveis</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link rel="stylesheet" href="../styles/styles.css">
 <link rel="icon" type="image/png" sizes="32x32" href="../styles/assets/favicon.png">
 <meta name="theme-color" content="#ffffff">
 <style>
@@ -68,16 +69,24 @@ body {
     transform: translateY(-2px);
 }
 
-.admin-badge {
-    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-    color: var(--white);
-    padding: 0.4rem 1rem;
-    border-radius: 2rem;
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    box-shadow: var(--shadow-sm);
+li.nav-link.admin-badge {
+    background: #28a745 !important;
+    color: white !important;
+    padding: 0.4rem 1rem !important;
+    border-radius: 0.25rem !important;
+    font-size: 0.9rem !important;
+    font-weight: normal !important;
+    transition: none !important;
+    margin: 0 0.5rem !important;
+    list-style: none !important;
+    display: inline-block !important;
+    align-content: center;
+}
+
+li.nav-link.admin-badge:hover {
+    background: #28a745 !important;
+    color: white !important;
+    transform: none !important;
 }
 
 .main-container {
@@ -261,7 +270,7 @@ body {
 }
 
 .card-header {
-    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    background: linear-gradient(135deg, #004d40, #00695c);
     color: var(--white);
     padding: 1.5rem;
     border: none;
@@ -369,7 +378,6 @@ body {
 
 .table tbody tr:hover {
     background: var(--primary-light);
-    transform: scale(1.01);
 }
 
 .table img {
@@ -413,7 +421,7 @@ body {
 }
 
 .modal-header {
-    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    background: linear-gradient(135deg, #004d40, #00695c);
     color: var(--white);
     border: none;
     padding: 1.5rem;
@@ -448,6 +456,22 @@ body {
     border-radius: var(--border-radius-sm);
     margin: 0.25rem;
     box-shadow: var(--shadow-sm);
+    border: 2px solid #e9ecef;
+    transition: all 0.3s ease;
+}
+
+.image-preview:hover {
+    border-color: var(--primary-color);
+    transform: scale(1.05);
+}
+
+.image-counter-warning {
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
 }
 
 .notification {
@@ -503,20 +527,18 @@ body {
 </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg sticky-top">
+<nav class="navbar navbar-expand-lg">
 <div class="container">
-    <a class="navbar-brand" href="../index.html">
-        <img class="logo" src="../styles/assets/logo.png" alt="Rassete Imóveis Logo">
-    </a>
+    <div class="brand">
+        <img class="logo" src="../styles/assets/logo.png" alt="Logo da Rassete Imóveis">
+    </div>      
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
-            <li class="nav-item">
-                <span class="nav-link admin-badge">
-                    <i class="fas fa-crown"></i> Administrador
-                </span>
+            <li class="nav-link admin-badge">
+                    Administrador
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="../index.html">
@@ -731,7 +753,11 @@ body {
                 </div>
 
                 <div class="mb-3">
-                    <label for="images" class="form-label">Imagens</label>
+                    <label for="images" class="form-label">
+                        Imagens 
+                        <small class="text-muted">(Máximo 10 fotos)</small>
+                        <span class="badge bg-secondary ms-1" id="imageCounter">0/10</span>
+                    </label>
                     <input type="file" class="form-control" id="images" multiple accept="image/*" onchange="previewImages()">
                     <div class="mt-2" id="imagePreview"></div>
                 </div>
@@ -863,6 +889,7 @@ function openAddModal() {
     document.getElementById('modalTitle').innerHTML = '<i class="fas fa-plus-circle"></i> Adicionar Imóvel';
     document.getElementById('propertyForm').reset();
     document.getElementById('imagePreview').innerHTML = '';
+    updateImageCounter();
     new bootstrap.Modal(document.getElementById('propertyModal')).show();
 }
 
@@ -887,12 +914,24 @@ function editProperty(id) {
 
     const preview = document.getElementById('imagePreview');
     if (currentImages && currentImages.length > 0) {
-        preview.innerHTML = currentImages.map(img => 
-            `<img src="${img}" class="image-preview" alt="Preview">`
+        preview.innerHTML = currentImages.map((img, index) => 
+            `<div style="position: relative; display: inline-block; margin: 0.25rem;">
+                <img src="${img}" class="image-preview" alt="Preview ${index + 1}">
+                <button type="button" onclick="removeImage(${index})" 
+                        style="position: absolute; top: -8px; right: -8px; 
+                               background: #dc3545; color: white; border: none; 
+                               border-radius: 50%; width: 24px; height: 24px; 
+                               font-size: 14px; cursor: pointer; font-weight: bold;
+                               box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+                               display: flex; align-items: center; justify-content: center;"
+                        title="Remover imagem">×</button>
+            </div>`
         ).join('');
     } else {
         preview.innerHTML = '';
     }
+
+    updateImageCounter();
 
     new bootstrap.Modal(document.getElementById('propertyModal')).show();
 }
@@ -983,20 +1022,30 @@ function clearFilters() {
 
 function previewImages() {
     const input = document.getElementById('images');
-    const preview = document.getElementById('imagePreview');
     
     if (!currentImages) currentImages = [];
     
     if (input.files && input.files.length > 0) {
-        Array.from(input.files).forEach(file => {
+        const remainingSlots = 10 - currentImages.length;
+        const filesToProcess = Math.min(input.files.length, remainingSlots);
+        
+        if (input.files.length > remainingSlots) {
+            showNotification(`Limite de 10 imagens atingido. Apenas ${filesToProcess} imagens foram adicionadas.`, 'error');
+        }
+        
+        for (let i = 0; i < filesToProcess; i++) {
+            const file = input.files[i];
             const reader = new FileReader();
             reader.onload = function(e) {
                 currentImages.push(e.target.result);
                 updateImagePreview();
+                updateImageCounter();
             };
             reader.readAsDataURL(file);
-        });
+        }
     }
+    
+    input.value = '';
 }
 
 function updateImagePreview() {
@@ -1004,8 +1053,15 @@ function updateImagePreview() {
     if (currentImages && currentImages.length > 0) {
         preview.innerHTML = currentImages.map((img, index) => 
             `<div style="position: relative; display: inline-block; margin: 0.25rem;">
-                <img src="${img}" class="image-preview" alt="Preview">
-                <button type="button" onclick="removeImage(${index})" style="position: absolute; top: -5px; right: -5px; background: #dc3545; color: white; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 12px; cursor: pointer;">×</button>
+                <img src="${img}" class="image-preview" alt="Preview ${index + 1}">
+                <button type="button" onclick="removeImage(${index})" 
+                        style="position: absolute; top: -8px; right: -8px; 
+                               background: #dc3545; color: white; border: none; 
+                               border-radius: 50%; width: 24px; height: 24px; 
+                               font-size: 14px; cursor: pointer; font-weight: bold;
+                               box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+                               display: flex; align-items: center; justify-content: center;"
+                        title="Remover imagem">×</button>
             </div>`
         ).join('');
     } else {
@@ -1013,9 +1069,24 @@ function updateImagePreview() {
     }
 }
 
+function updateImageCounter() {
+    const counter = document.getElementById('imageCounter');
+    if (counter) {
+        const count = currentImages ? currentImages.length : 0;
+        counter.textContent = `${count}/10`;
+        counter.className = `badge ms-1 ${count >= 10 ? 'bg-danger' : count >= 7 ? 'bg-warning' : 'bg-secondary'}`;
+    }
+}
+
 function removeImage(index) {
     currentImages.splice(index, 1);
     updateImagePreview();
+    updateImageCounter();
+    
+    if (currentImages.length < 10) {
+        const input = document.getElementById('images');
+        input.disabled = false;
+    }
 }
 
 function logoutUser() {
