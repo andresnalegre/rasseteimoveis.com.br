@@ -512,6 +512,166 @@ function submitContactForm(event) {
     NavbarModule.handleContactForm(event);
 }
 
+// Search
+const SearchModule = {
+    form: null,
+    searchButton: null,
+    originalButtonText: 'BUSCAR',
+    loadingButtonText: 'BUSCANDO...',
+    loadingDuration: 3000,
+    isSearching: false,
+
+    init() {
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => this.setup());
+        } else {
+            this.setup();
+        }
+    },
+
+    setup() {
+        this.cacheElements();
+        this.bindEvents();
+        this.setInitialState();
+    },
+
+    cacheElements() {
+        this.form = document.querySelector('.searching');
+        this.searchButton = document.querySelector('.btn-search');
+
+        if (!this.form) {
+            console.warn('SearchModule: Elemento .searching não encontrado');
+        }
+
+        if (!this.searchButton) {
+            console.warn('SearchModule: Elemento .btn-search não encontrado');
+        }
+    },
+
+    setInitialState() {
+        if (this.searchButton) {
+            this.originalButtonText = this.searchButton.innerHTML.trim() || 'BUSCAR';
+        }
+    },
+
+    bindEvents() {
+        if (this.form) {
+            this.form.addEventListener('submit', (event) => this.handleFormSubmit(event));
+        }
+    },
+
+    handleFormSubmit(event) {
+        if (this.isSearching) {
+            event.preventDefault();
+            return;
+        }
+
+        this.startSearching();
+        
+        setTimeout(() => {
+            this.stopSearching();
+        }, this.loadingDuration);
+    },
+
+    startSearching() {
+        if (!this.searchButton) return;
+
+        this.isSearching = true;
+        this.searchButton.innerHTML = this.loadingButtonText;
+        this.searchButton.disabled = true;
+        this.searchButton.classList.add('searching-state');
+    },
+
+    stopSearching() {
+        if (!this.searchButton) return;
+
+        this.isSearching = false;
+        this.searchButton.innerHTML = this.originalButtonText;
+        this.searchButton.disabled = false;
+        this.searchButton.classList.remove('searching-state');
+    },
+
+    updateButtonTexts(originalText, loadingText) {
+        this.originalButtonText = originalText || this.originalButtonText;
+        this.loadingButtonText = loadingText || this.loadingButtonText;
+        
+        if (!this.isSearching && this.searchButton) {
+            this.searchButton.innerHTML = this.originalButtonText;
+        }
+    },
+
+    updateLoadingDuration(duration) {
+        this.loadingDuration = duration;
+    },
+
+    triggerSearch() {
+        if (this.form && !this.isSearching) {
+            const submitEvent = new Event('submit', { bubbles: true, cancelable: true });
+            this.form.dispatchEvent(submitEvent);
+        }
+    },
+
+    resetForm() {
+        if (this.form) {
+            this.form.reset();
+        }
+        this.stopSearching();
+    },
+
+    getFormData() {
+        if (!this.form) return null;
+        
+        const formData = new FormData(this.form);
+        const data = {};
+        
+        for (let [key, value] of formData.entries()) {
+            data[key] = value;
+        }
+        
+        return data;
+    },
+
+    setFormData(data) {
+        if (!this.form || !data) return;
+
+        Object.keys(data).forEach(key => {
+            const input = this.form.querySelector(`[name="${key}"]`);
+            if (input) {
+                input.value = data[key];
+            }
+        });
+    },
+
+    restart() {
+        this.destroy();
+        this.setup();
+    },
+
+    destroy() {
+        if (this.form) {
+            this.form.removeEventListener('submit', this.handleFormSubmit);
+        }
+        
+        this.stopSearching();
+        
+        this.form = null;
+        this.searchButton = null;
+        this.isSearching = false;
+    },
+
+    api: {
+        search: () => SearchModule.triggerSearch(),
+        reset: () => SearchModule.resetForm(),
+        start: () => SearchModule.startSearching(),
+        stop: () => SearchModule.stopSearching(),
+        getData: () => SearchModule.getFormData(),
+        setData: (data) => SearchModule.setFormData(data),
+        updateTexts: (original, loading) => SearchModule.updateButtonTexts(original, loading),
+        updateDuration: (duration) => SearchModule.updateLoadingDuration(duration),
+        restart: () => SearchModule.restart()
+    }
+};
+
 // Catalog
 const CatalogModule = {
     tabButtons: null,

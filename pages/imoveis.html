@@ -42,7 +42,7 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarMenu">
                     <ul class="nav-list ml-auto">
-                        <li class="menu-item"><a class="menu-link" href="./index.html">Início</a></li>
+                        <li class="menu-item"><a class="menu-link" href="../index.html">Início</a></li>
                         <li class="menu-item"><a class="menu-link" onclick="openModal()">Quem Somos</a></li>
                         <li class="menu-item dropdown d-none d-lg-block">
                             <a class="menu-link dropdown-toggle" href="#" id="dropdownMenu" role="button" aria-haspopup="true" aria-expanded="false">
@@ -138,6 +138,81 @@
 
     <!-- Main -->
     <main>
+        <!-- Search -->
+        <section class="search-section">
+            <div class="container">
+                <div class="search-header">
+                    <h2 class="search-title">Filtro certo, casa certa!</h2>
+                    <p class="search-subtitle">Personalize sua busca e veja só o que tem a ver com você.</p>
+                </div>
+    
+                <form class="searching" action="https://www.rasseteimoveis.com.br/imoveis/buscar" method="POST">
+                    <input type="hidden" name="_token" value="Lbx4VWRN4TK9cIh2voh7qfRjH5TM5G4QIcBjxXF6">
+                    
+                    <div class="search-row">
+                        <select id="negotiation" class="form-control" name="negociacao[]">
+                            <option value="">Negociação</option>
+                            <option value="locacao">Aluguel</option>
+                            <option value="venda">Venda</option>
+                        </select>
+                        
+                        <select class="form-control" name="tipoimovel[]">
+                            <option value="">Tipo de Imóvel</option>
+                            <option value="4888::apartamento">Apartamento</option>
+                            <option value="4889::casa">Casa</option>
+                            <option value="4893::chacara-sitio">Chácara / Sítio</option>
+                            <option value="4892::galpao">Galpão</option>
+                            <option value="4891::sala-comercial">Sala Comercial</option>
+                            <option value="4890::terreno">Terreno</option>
+                        </select>
+                        
+                        <select id="load_neighborhoods" class="form-control" name="cidade">
+                            <option value="">Cidade</option>
+                            <option value="balneario-camboriu">Balneário Camboriú</option>
+                            <option value="balneario-picarras">Balneário Piçarras</option>
+                            <option value="barra-velha">Barra Velha</option>
+                            <option value="bombinhas">Bombinhas</option>
+                            <option value="indaial">Indaial</option>
+                            <option value="itajai">Itajaí</option>
+                            <option value="navegantes">Navegantes</option>
+                            <option value="penha">Penha</option>
+                            <option value="sao-bento-do-sul">São Bento do Sul</option>
+                        </select>
+                        
+                        <select id="neighborhood" class="form-control" name="bairros[]">
+                            <option value="">Bairro</option>
+                            <option value="centro">Centro</option>
+                            <option value="pioneiros">Pioneiros</option>
+                            <option value="nações">Nações</option>
+                            <option value="estados">Estados</option>
+                            <option value="praia-brava">Praia Brava</option>
+                        </select>
+                    </div>
+                    
+                    <div class="search-row">
+                        <select class="form-control" name="dormitorios[]">
+                            <option value="">Dormitórios</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                        </select>
+                        
+                        <input type="text" class="form-control" name="valormin" placeholder="Valor Mínimo">
+                        <input type="text" class="form-control" name="valormax" placeholder="Valor Máximo">
+                        <input type="text" class="form-control" name="codigo" placeholder="Buscar por código">
+                    </div>
+    
+                    <div class="search-button-container" style="align-self: center;">
+                        <button type="submit" class="btn-search">BUSCAR</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
         <section class="property-catalog" id="properties">
             <div class="container">
                 <div class="section-header">
